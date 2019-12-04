@@ -1,131 +1,217 @@
 package com.example.pick_a_park.ui.login;
-
-import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.pick_a_park.Connessione;
+import com.example.pick_a_park.MainActivity;
+import com.example.pick_a_park.Parametri;
 import com.example.pick_a_park.R;
-import com.example.pick_a_park.ui.login.LoginViewModel;
-import com.example.pick_a_park.ui.login.LoginViewModelFactory;
+import com.example.pick_a_park.ui.login.ConnessioneListener;
 
-public class LoginActivity extends AppCompatActivity {
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import org.json.*;
 
-    private LoginViewModel loginViewModel;
+public class LoginActivity extends AppCompatActivity implements ConnessioneListener {
+    private ProgressDialog caricamento = null;
+    private int opzioniAvanzate = 0;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
-
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.login);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+/*
+        // Imposto le impostazioni avanzate
+        ImageView imgv = findViewById(R.id.unicamParkLoginLogo);
+        imgv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
-                }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
+            public void onClick(View view) {
+                impostazioniAvanzate();
             }
         });
+        */
 
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
-                setResult(Activity.RESULT_OK);
-
-                //Complete and destroy login activity once successful
-                finish();
-            }
-        });
-
-        TextWatcher afterTextChangedListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                }
-                return false;
-            }
-        });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        });
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+
+    public void goToSignUp(View view) {
+       // startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+        finish();
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    public void goToPasswordRecovery(View view) {
+       // startActivity(new Intent(LoginActivity.this, PasswordRecoveryActivity.class));
+        finish();
+    }
+
+    public void onClickLogin(View view) {
+        EditText mail = findViewById(R.id.mail);
+        EditText pass = findViewById(R.id.pass);
+        String username, password;
+
+        // Prelevo i dati per il login per inviarli al server.
+        username = mail.getText().toString();
+        password = pass.getText().toString();
+
+        try {
+            password = SHA1(password);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Riscontrati problemi nell' hashing della password.", Toast.LENGTH_LONG).show();
+            return;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Riscontrati problemi nell' hashing della password.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        sendDataForLogin(username, password);
+    }
+
+    private void sendDataForLogin(String username, String password) {
+        // Avverto l'utente del tentativo di invio dei dati di login al server
+        caricamento = ProgressDialog.show(LoginActivity.this, "Login in corso",
+                "Connessione con il server in corso...", true);
+        caricamento.show();
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("username", username);
+            postData.put("password", password);
+        } catch (Exception e) {
+            caricamento.dismiss();
+            return;
+        }
+
+        Connessione conn = new Connessione(postData, "POST");
+        conn.addListener(this);
+        conn.execute(Parametri.IP + "/api/auth/register");
+    }
+
+    // Intercetta la risposta di sendDataForLogin
+    @Override
+    public void ResultResponse(String responseCode, String result) {
+        if (responseCode == null) {
+            caricamento.dismiss();
+            Toast.makeText(getApplicationContext(), "ERRORE:\nConnessione Assente o server offline.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (responseCode.equals("400")) {
+            String message = Connessione.estraiErrore(result);
+            caricamento.dismiss();
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (responseCode.equals("200")) {
+            String message;
+
+            // Estraggo i miei dati restituiti dal server
+            try {
+                JSONObject token = new JSONObject(result);
+                JSONObject autistajs = new JSONObject(token.getString("autista"));
+                JSONObject carta;
+
+                Parametri.Token = token.getString("token");
+                Parametri.id = autistajs.getString("id");
+                Parametri.username = autistajs.getString("username");
+                Parametri.nome = autistajs.getString("nome");
+                Parametri.cognome = autistajs.getString("cognome");
+                Parametri.data_nascita = autistajs.getString("dataDiNascita");
+                Parametri.email = autistajs.getString("email");
+                Parametri.password = autistajs.getString("password");
+                Parametri.saldo = autistajs.getString("saldo");
+                Parametri.telefono = autistajs.getString("telefono");
+
+                message = "Benvenuto " + Parametri.nome + ".";
+
+                // Tento l'estrazione dei dati della carta di credito
+                if (autistajs.has("carta_di_credito")) {
+                    carta = new JSONObject(autistajs.getString("carta_di_credito"));
+
+                    if (carta.has("numero_carta"))
+                        Parametri.numero_carta = carta.getString("numero_carta");
+                    if (carta.has("dataDiScadenza"))
+                        Parametri.data_di_scadenza = carta.getString("dataDiScadenza");
+                    if (carta.has("pin"))
+                        Parametri.pin = carta.getString("pin");
+                }
+
+            } catch (Exception e) {
+                message = "Errore di risposta del server.";
+
+                caricamento.dismiss();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                return;
+            }
+
+            // Salvo i dati di login corretti
+            saveData(Parametri.username, Parametri.password);
+
+            caricamento.dismiss();
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
+    }
+
+    private void saveData(String username, String password) {
+        try {
+            BufferedWriter fos = new BufferedWriter(new FileWriter(Parametri.login_file.getAbsolutePath()));
+            fos.write(username + "\n");
+            fos.write(password + "\n");
+            fos.write(Parametri.TEMPO_EXTRA + "\n");
+            fos.write(Parametri.TEMPO_AVVISO + "\n");
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Criptazione SHA1
+    public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        byte[] sha1hash;
+        md.update(text.getBytes("iso-8859-1"), 0, text.length());
+        sha1hash = md.digest();
+        return convertToHex(sha1hash);
+    }
+
+    private static String convertToHex(byte[] data) {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < data.length; i++) {
+            int halfbyte = (data[i] >>> 4) & 0x0F;
+            int two_halfs = 0;
+            do {
+                if ((0 <= halfbyte) && (halfbyte <= 9)) {
+                    buf.append((char) ('0' + halfbyte));
+                } else {
+                    buf.append((char) ('a' + (halfbyte - 10)));
+                }
+                halfbyte = data[i] & 0x0F;
+            } while (two_halfs++ < 1);
+        }
+        return buf.toString();
+    }
+
+    private void impostazioniAvanzate() {
+        opzioniAvanzate++;
+
+        if (opzioniAvanzate == 3) {
+           // startActivity(new Intent(LoginActivity.this, ImpostazioniAvanzate.class));
+            opzioniAvanzate = 0;
+        }
     }
 }
