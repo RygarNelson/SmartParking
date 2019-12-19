@@ -17,6 +17,10 @@ module.exports = {
         return bcrypt.hashSync(password, encryptionOptions.saltRounds)
     },
 
+    comparePasswords: function(password, hash) {
+        return bcrypt.compareSync(password, hash)
+    },
+
     createJwtToken: function (payload) {
         return jwt.sign(payload, secret, jwtOptions)
     }
