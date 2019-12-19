@@ -2,8 +2,6 @@ package com.example.pick_a_park;
 
 import android.os.AsyncTask;
 
-import com.example.pick_a_park.ui.login.ConnessioneListener;
-
 import org.json.*;
 import java.net.URL;
 import java.net.HttpURLConnection;

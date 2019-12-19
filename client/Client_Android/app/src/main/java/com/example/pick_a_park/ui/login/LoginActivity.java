@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +12,9 @@ import com.example.pick_a_park.Connessione;
 import com.example.pick_a_park.MainActivity;
 import com.example.pick_a_park.Parametri;
 import com.example.pick_a_park.R;
-import com.example.pick_a_park.ui.login.ConnessioneListener;
+import com.example.pick_a_park.SignUp;
+import com.example.pick_a_park.ConnessioneListener;
+
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -30,6 +31,8 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        int x= 0;
+        x++;
 /*
         // Imposto le impostazioni avanzate
         ImageView imgv = findViewById(R.id.unicamParkLoginLogo);
@@ -45,7 +48,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
 
 
     public void goToSignUp(View view) {
-       // startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+        startActivity(new Intent(LoginActivity.this, SignUp.class));
         finish();
     }
 
