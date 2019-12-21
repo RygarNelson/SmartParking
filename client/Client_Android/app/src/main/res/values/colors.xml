@@ -9,4 +9,6 @@
     <color name="blue_trasparente">#af849efb</color>
     <color name="green_trasparente">#af5fff6a</color>
     <color name="invisibile">#00ffffff</color>
+    <color name="login_background">#ff03f0fc</color>
+
 </resources>

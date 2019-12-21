@@ -31,8 +31,8 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        int x= 0;
-        x++;
+
+
 /*
         // Imposto le impostazioni avanzate
         ImageView imgv = findViewById(R.id.unicamParkLoginLogo);

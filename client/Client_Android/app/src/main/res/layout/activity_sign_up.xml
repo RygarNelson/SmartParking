@@ -39,7 +39,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/roundedbutton"
+                android:background="@drawable/whiteroundedbutton"
 
                 android:text="@string/btn_return_login"
                 android:textAllCaps="true"
@@ -86,7 +86,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/roundedbutton"
+                android:background="@drawable/whiteroundedbutton"
 
                 android:onClick="sendDataForSignUp"
                 android:text="@string/btn_signUp"
