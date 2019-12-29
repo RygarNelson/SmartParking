@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.login.LoginActivity"
+    tools:context=".LoginActivity"
     android:divider="@android:color/transparent"
     android:dividerHeight="0dp">
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -111,7 +111,7 @@
             android:onClick="onClickLogin"
             android:text=">"
             android:textAllCaps="true"
-            android:textColor="#03f0fc"
+            android:textColor="#03D3E2"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +140,7 @@
             android:layout_height="30dp"
 
             android:background="@android:color/transparent"
-            android:onClick="goToPasswordRecovery"
+            android:onClick="goToSignUp"
             android:text="Sign up for an account?"
             android:textAllCaps="false"
             android:textColor="@color/white"

@@ -4,16 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.pick_a_park.ui.login.LoginActivity;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -29,6 +25,7 @@ public class StartActivity extends AppCompatActivity {
             public void run() {
                 Intent i = new Intent(StartActivity.this, LoginActivity.class);
                 startActivity(i);
+                finish();
             }
         }, 4500);
 
@@ -38,6 +35,9 @@ public class StartActivity extends AppCompatActivity {
         //First line
         Animation a = AnimationUtils.loadAnimation(this, R.anim.start_animation);
         a.reset();
+        ImageView car1 = (ImageView) findViewById(R.id.car1);
+        car1.clearAnimation();
+        car1.startAnimation(a);
         TextView tv = (TextView) findViewById(R.id.first_text);
         tv.clearAnimation();
         tv.startAnimation(a);
@@ -70,6 +70,9 @@ public class StartActivity extends AppCompatActivity {
         //second line
         a = AnimationUtils.loadAnimation(this, R.anim.start_animation);
         a.reset();
+        ImageView car2 = (ImageView) findViewById(R.id.car2);
+        car2.clearAnimation();
+        car2.startAnimation(a);
         tv = (TextView) findViewById(R.id.second_text);
         tv.clearAnimation();
         tv.startAnimation(a);
@@ -107,6 +110,9 @@ public class StartActivity extends AppCompatActivity {
         //third line
         a = AnimationUtils.loadAnimation(this, R.anim.start_animation);
         a.reset();
+        ImageView car3 = (ImageView) findViewById(R.id.car3);
+        car3.clearAnimation();
+        car3.startAnimation(a);
         tv = (TextView) findViewById(R.id.third_text);
         tv.clearAnimation();
         tv.startAnimation(a);

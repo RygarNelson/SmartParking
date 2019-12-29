@@ -1,4 +1,4 @@
-package com.example.pick_a_park.ui.login;
+package com.example.pick_a_park;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,13 +7,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.pick_a_park.Connessione;
-import com.example.pick_a_park.MainActivity;
-import com.example.pick_a_park.Parametri;
-import com.example.pick_a_park.R;
-import com.example.pick_a_park.SignUp;
-import com.example.pick_a_park.ConnessioneListener;
 
 
 import java.io.BufferedWriter;
@@ -31,18 +24,6 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
-/*
-        // Imposto le impostazioni avanzate
-        ImageView imgv = findViewById(R.id.unicamParkLoginLogo);
-        imgv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                impostazioniAvanzate();
-            }
-        });
-        */
 
     }
 

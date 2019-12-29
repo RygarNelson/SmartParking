@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Parametri {
     // Dati server e connessione
-    public static String IP = "http://192.168.43.221:5700";
+    public static String IP = "http://93.46.53.229:5700";
     static String UUIDPARKING = "00001101-0000-1000-8000-00805f9b34fb";
     public static String Token = null;
     public static File login_file;

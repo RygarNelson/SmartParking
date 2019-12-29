@@ -1,16 +1,21 @@
 package com.example.pick_a_park;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.pick_a_park.ui.login.LoginActivity;
-
 import org.json.JSONObject;
+
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -18,6 +23,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class SignUp extends AppCompatActivity implements ConnessioneListener {
     private ProgressDialog caricamento = null;
+    protected static final int CAMERA_REQUEST = 0;
+    protected static final int GALLERY_PICTURE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +33,72 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
     /**
      * This method will send user credentials for registration.
      */
+    public void TakePicture(View view){
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
+                this);
+        myAlertDialog.setTitle("Upload Pictures Option");
+        myAlertDialog.setMessage("How do you want to set your picture?");
+
+        myAlertDialog.setPositiveButton("Gallery",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent pictureActionIntent = null;
+
+                        pictureActionIntent = new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(
+                                pictureActionIntent,
+                                GALLERY_PICTURE);
+
+                    }
+                });
+
+        myAlertDialog.setNegativeButton("Camera",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        Intent intent = new Intent(
+                                MediaStore.ACTION_IMAGE_CAPTURE);
+                        File f = new File(android.os.Environment
+                                .getExternalStorageDirectory(), "temp.jpg");
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                Uri.fromFile(f));
+
+                        startActivityForResult(intent,
+                                CAMERA_REQUEST);
+
+                    }
+                });
+        myAlertDialog.show();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        ImageView imageview = findViewById(R.id.img);
+        switch(requestCode) {
+            case 0:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    imageview.setImageURI(selectedImage);
+                }
+
+                break;
+            case 1:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    imageview.setImageURI(selectedImage);
+                }
+                break;
+        }
+    }
     public void sendDataForSignUp(View view){
         //Prendo i dati dalla form:
         EditText nome = findViewById(R.id.nome);
         EditText cognome = findViewById(R.id.cognome);
         EditText dataDinascita = findViewById(R.id.data_nascita);
         EditText telefono = findViewById(R.id.telefono);
-        EditText username = findViewById(R.id.username);
+
         EditText mail = findViewById(R.id.email);
         EditText password = findViewById(R.id.password);
         EditText passwordr = findViewById(R.id.repPass);
@@ -42,7 +108,7 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
         String cognomes = cognome.getText().toString();
         String dataDinascitas = dataDinascita.getText().toString();
         String telefonos = telefono.getText().toString();
-        String usernames = username.getText().toString();
+
         String mails = mail.getText().toString();
         String passwords = password.getText().toString();
         String passwordrs = passwordr.getText().toString();
@@ -53,7 +119,7 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
             return;
         }
         else
-        if (nomes.length() < 1 || cognomes.length() < 1 || dataDinascitas.length() < 1 || telefonos.length() < 1 || usernames.length() < 1 || mails.length() < 1)
+        if (nomes.length() < 1 || cognomes.length() < 1 || dataDinascitas.length() < 1 || telefonos.length() < 1 || mails.length() < 1)
         {
             Toast.makeText(this, "ERRORE:\nDevi compilare tutti i campi.", Toast.LENGTH_LONG).show();
             return;
@@ -72,7 +138,6 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
         JSONObject autista = new JSONObject();
 
         try {
-            autista.put("username", usernames);
             autista.put("password", passwords);
             autista.put("email", mails);
             autista.put("nome", nomes);

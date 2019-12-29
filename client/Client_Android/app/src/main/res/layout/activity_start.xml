@@ -7,6 +7,99 @@
     tools:context=".StartActivity"
     android:background="@color/black">
 
+    <View
+        android:background="@color/white"
+        android:id="@+id/park11"
+        android:layout_width="50dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+         />
+    <View
+        android:background="@color/white"
+        android:id="@+id/park12"
+        android:layout_width="2dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <View
+        android:background="@color/white"
+        android:id="@+id/park13"
+        android:layout_width="50dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="350dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <View
+        android:background="@color/white"
+        android:id="@+id/park22"
+        android:layout_width="2dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="350dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <View
+        android:background="@color/white"
+        android:id="@+id/park23"
+        android:layout_width="50dp"
+        android:layout_height="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/third_text"
+        />
+    <View
+
+        android:background="@color/white"
+        android:id="@+id/park32"
+        android:layout_width="2dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="400dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <View
+        android:background="@color/white"
+        android:id="@+id/park33"
+        android:layout_width="50dp"
+        android:layout_height="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/park32" />
+    <ImageView
+        android:id="@+id/car1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/macchina"
+        app:layout_constraintEnd_toStartOf="@id/first_text"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/park11"></ImageView>
+    <ImageView
+        android:id="@+id/car2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/macchina"
+        app:layout_constraintEnd_toStartOf="@id/second_text"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/park12"></ImageView>
+    <ImageView
+        android:id="@+id/car3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/macchina"
+        app:layout_constraintEnd_toStartOf="@id/third_text"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/park23"></ImageView>
+
+
     <TextView
         android:id="@+id/first_text"
         android:layout_width="match_parent"
@@ -22,17 +115,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon_launcher" />
+
     <TextView
         android:id="@+id/second_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="A"
         android:textAlignment="center"
-        android:textSize="20dp"
         android:textColor="@color/white"
+        android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/first_text" />
+
     <TextView
         android:id="@+id/third_text"
         android:layout_width="match_parent"
