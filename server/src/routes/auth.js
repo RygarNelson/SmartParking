@@ -8,9 +8,59 @@ const authMethods = require('../methods/authMethods')
 
 const { connection } = require('../db')
 
+router.post('/login', async (req, res) => {
+    console.log(req.body)
+    connection.getConnection(function (err, connection) {
+        if (err) {
+            res.send({
+                success: false,
+                error: err
+            })
+        } else {
+            connection.query("select * from users where email = ? ;", [req.body.email], function (err, results, fields) {
+                connection.release()
+                if (err) {
+                    res.status(400).send({
+                        success: false,
+                        error: err
+                    })
+                } else {
+                    if (results.length === 0) {
+                        res.status(400).send({
+                            success: false,
+                            error: "Invalid email or password"
+                        })
+                    } else {
+                        if (authMethods.comparePasswords(req.body.password, results[0].password)) {
+                            authMethods.deleteItemsOnJson(results[0], ["password"])
+                            res.status(200).send({
+                                autista:{
+                                    token: authMethods.createJwtToken(authMethods.createJwtPayload(results[0].email, results[0].id)),
+                                    id: results[0].id,
+                                    email: results[0].email,
+                                    nome: results[0].firstname,
+                                    cognome: results[0].lastname,
+                                    dataDiNascita: results[0].date,
+                                    telefono: results[0].telephone
+                                }
+                            })
+                        } else {
+                            res.status(400).send({
+                                success: false,
+                                error: "Invalid email or password"
+                            })
+                        }
+                    }
+                }
+            })
+        }
+    })
+})
+
 router.post('/register', async (req, res) => {
     //Stampo i dati ricevuti
-    console.log(req.body)
+    let JSONbody = req.body.autista
+    console.log(JSONbody)
     //Mi connetto al database
     connection.getConnection(function (err, connection) {
         if (err) {
@@ -20,42 +70,24 @@ router.post('/register', async (req, res) => {
             })
         } else {
             //Preparo la query
-            let userPass = authMethods.encryptPassword(req.body.password)
-            let insertionArray = [req.body.username, req.body.email, userPass, req.body.firstname, req.body.lastname, req.body.date, req.body.telephone, req.body.fc]
+            let userPass = authMethods.encryptPassword(JSONbody.password)
+            
+            let insertionArray = [JSONbody.email, userPass, JSONbody.nome, JSONbody.cognome, JSONbody.dataDiNascita, JSONbody.telefono, JSONbody.CF]
             //Inserisco Utente nel Database
-            connection.query("insert into users (id, username, email, pass, firstname, lastname, date, telephone, fc, card) values (NULL,?,?,?,?,?,?,?,?,NULL);", insertionArray, function (err, results, fields){
+            connection.query("insert into users (id, email, password, firstname, lastname, date, telephone, fc, card) values (NULL,?,?,?,?,?,?,?,NULL);", insertionArray, function (err, results, fields){
+                connection.release()
                 if (err) {
-                    res.send({
+                    res.status(400).send({
                         success: false,
                         error: "There is an error. Please try again!"
                     })
                 } else {
-                    //Recupero ID dal database
-                    connection.query('select id from users where email = ?', req.body.email, function (err, results, fields){
-                        if (err) {
-                            res.send({
-                                success: false,
-                                error: "There is an error. Please try again!"
-                            })
-                        } else {
-                            //Invio JSON di risposta
-                            let userId = results[0].id
-                            res.send({
-                                success: true,
-                                data: [{
-                                    id: userId,
-                                    username: req.body.username,
-                                    email: req.body.email,
-                                    firstname: req.body.firstname,
-                                    lastname: req.body.lastname,
-                                    date: req.body.date,
-                                    telephone: req.body.telephone,
-                                    fc: req.body.fc,
-                                    card: req.body.card
-                                }],
-                                token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, userId))
-                            })
+                    //200 - 
+                    res.status(200).send({
+                        successful: {
+                            info: "Benvenuto nuovo cliente!"
                         }
+                        //token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, userId))
                     })
                 }
             })

@@ -6,6 +6,12 @@ const { encryptionOptions } = require('../config/encryptionOptions')
 
 module.exports = {
 
+    deleteItemsOnJson: function(array, items) {
+        for (let i = 0; i < items.length; i++) {
+            delete array[items[i]]
+        }
+    },
+
     createJwtPayload: function(email, id) {
         return {
             id: id,
