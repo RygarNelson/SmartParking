@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
 
         JSONObject postData = new JSONObject();
         try {
-            postData.put("username", username);
+            postData.put("email", username);
             postData.put("password", password);
         } catch (Exception e) {
             caricamento.dismiss();
@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
 
         Connessione conn = new Connessione(postData, "POST");
         conn.addListener(this);
-        conn.execute(Parametri.IP + "/api/auth/register");
+        conn.execute(Parametri.IP + "/api/auth/login");
     }
 
     // Intercetta la risposta di sendDataForLogin
@@ -105,21 +105,18 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
             try {
                 JSONObject token = new JSONObject(result);
                 JSONObject autistajs = new JSONObject(token.getString("autista"));
-                JSONObject carta;
 
-                Parametri.Token = token.getString("token");
+
+                Parametri.Token = autistajs.getString("token");
                 Parametri.id = autistajs.getString("id");
-                Parametri.username = autistajs.getString("username");
                 Parametri.nome = autistajs.getString("nome");
                 Parametri.cognome = autistajs.getString("cognome");
                 Parametri.data_nascita = autistajs.getString("dataDiNascita");
                 Parametri.email = autistajs.getString("email");
-                Parametri.password = autistajs.getString("password");
-                Parametri.saldo = autistajs.getString("saldo");
                 Parametri.telefono = autistajs.getString("telefono");
 
                 message = "Benvenuto " + Parametri.nome + ".";
-
+                /*
                 // Tento l'estrazione dei dati della carta di credito
                 if (autistajs.has("carta_di_credito")) {
                     carta = new JSONObject(autistajs.getString("carta_di_credito"));
@@ -131,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
                     if (carta.has("pin"))
                         Parametri.pin = carta.getString("pin");
                 }
-
+                */
             } catch (Exception e) {
                 message = "Errore di risposta del server.";
 

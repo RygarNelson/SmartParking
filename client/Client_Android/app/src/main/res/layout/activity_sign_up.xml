@@ -17,8 +17,8 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp"
             >
-
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/img"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
@@ -27,13 +27,14 @@
                 android:src="@mipmap/ic_add_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
+
             <EditText
                 android:id="@+id/nome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-
+                android:textColor="#F0F0F0"
                 android:layout_marginEnd="32dp"
                 android:backgroundTint="@color/white"
                 android:hint="NAME"
@@ -48,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-
+            android:textColor="#F0F0F0"
             android:layout_marginEnd="32dp"
             android:backgroundTint="@color/white"
             android:hint="SURNAME"
@@ -63,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-
+                android:textColor="#F0F0F0"
                 android:layout_marginEnd="32dp"
                 android:backgroundTint="@color/white"
                 android:hint="FISCAL CODE"
@@ -79,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
+                android:textColor="#F0F0F0"
                 android:backgroundTint="@color/white"
                 android:hint="BIRTHDAY"
                 android:textColorHint="@color/white"
@@ -92,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
+                android:textColor="#F0F0F0"
                 android:backgroundTint="@color/white"
                 android:hint="PHONE"
                 android:textColorHint="@color/white"
@@ -107,6 +110,7 @@
                 android:layout_marginEnd="32dp"
                 android:backgroundTint="@color/white"
                 android:hint="E-MAIL"
+                android:textColor="#F0F0F0"
                 android:textColorHint="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -119,6 +123,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:backgroundTint="@color/white"
+                android:textColor="#F0F0F0"
                 android:hint="PASSWORD"
                 android:textColorHint="@color/white"
                 android:textStyle="bold"
@@ -131,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-
+                android:textColor="#F0F0F0"
                 android:backgroundTint="@color/white"
                 android:hint="REPEAT PASSWORD"
                 android:textColorHint="@color/white"
@@ -148,6 +153,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/white_semirounded_button"
+                android:onClick="sendDataForSignUp"
                 android:text="Sign Up"
                 android:textAllCaps="true"
                 android:textColor="#03D3E2"

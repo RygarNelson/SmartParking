@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
     }
     /**
      * This method will send user credentials for registration.
@@ -58,15 +60,14 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
 
-                        Intent intent = new Intent(
-                                MediaStore.ACTION_IMAGE_CAPTURE);
-                        File f = new File(android.os.Environment
-                                .getExternalStorageDirectory(), "temp.jpg");
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                Uri.fromFile(f));
 
-                        startActivityForResult(intent,
-                                CAMERA_REQUEST);
+
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+                        }
+
+
 
                     }
                 });
@@ -79,8 +80,9 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
         switch(requestCode) {
             case 0:
                 if(resultCode == RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    imageview.setImageURI(selectedImage);
+                    Bundle extras = imageReturnedIntent.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    imageview.setImageBitmap(imageBitmap);
                 }
 
                 break;
@@ -98,7 +100,7 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
         EditText cognome = findViewById(R.id.cognome);
         EditText dataDinascita = findViewById(R.id.data_nascita);
         EditText telefono = findViewById(R.id.telefono);
-
+        EditText fiscal_code = findViewById(R.id.CF);
         EditText mail = findViewById(R.id.email);
         EditText password = findViewById(R.id.password);
         EditText passwordr = findViewById(R.id.repPass);
@@ -108,7 +110,7 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
         String cognomes = cognome.getText().toString();
         String dataDinascitas = dataDinascita.getText().toString();
         String telefonos = telefono.getText().toString();
-
+        String fiscal_codes = fiscal_code.getText().toString();
         String mails = mail.getText().toString();
         String passwords = password.getText().toString();
         String passwordrs = passwordr.getText().toString();
@@ -141,6 +143,7 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
             autista.put("password", passwords);
             autista.put("email", mails);
             autista.put("nome", nomes);
+            autista.put("CF", fiscal_codes);
             autista.put("cognome", cognomes);
             autista.put("dataDiNascita", dataDinascitas);
             autista.put("telefono", telefonos);
