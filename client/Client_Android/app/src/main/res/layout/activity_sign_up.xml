@@ -16,6 +16,7 @@
             android:backgroundTintMode="src_over"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp"
+
             >
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"

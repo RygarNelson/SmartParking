@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view"
+    >
+
+    <group android:checkableBehavior="single" >
+        <item
+            android:id="@+id/Home"
+            android:title="Home"
+            android:checked="true"
+            android:icon="@drawable/ic_home"
+            android:layout_marginTop="20dp"
+
+            />
+
+       <item
+           android:id="@+id/header"
+           android:title="nome utente"
+           android:icon="@drawable/ic_account"
+           android:textColor="#F0F0F0">
+
+       </item>
+
+        <item
+            android:id="@+id/nav_profile2"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+    </group>
+
+</menu>
