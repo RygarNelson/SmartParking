@@ -5,8 +5,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
@@ -58,17 +60,33 @@ public class MainActivity extends AppCompatActivity {
 
         OpenFragment();
     }
+    @Override
+    public void onBackPressed() {
+        Fragment myFragment =  getSupportFragmentManager().findFragmentByTag("HOME FRAGMENT");
+        if (myFragment != null && myFragment.isVisible()) {
+           ClearFragmentStack();
+            finish();
+        }else{
+            ClearFragmentStack();
+            OpenFragment();
+        }
+    }
+    public void ClearFragmentStack()
+    {
+        FragmentManager fm = this.getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
+    }
     public void OpenFragment(){
-
-
-        // Create a new Fragment to be placed in the activity layout
         HomeFragment firstFragment = new HomeFragment();
-
-
-
-        // Add the fragment to the 'fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, firstFragment).commit();
+                .add(R.id.fragment_container, firstFragment,"HOME FRAGMENT").commit();
+
+    }
+    public void About(MenuItem item) {
+        AboutFragment fragment = new AboutFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
 
     }
     // Menu icons are inflated just as they were with actionbar

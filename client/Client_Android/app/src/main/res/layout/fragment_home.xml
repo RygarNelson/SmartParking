@@ -1,36 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/scroll"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     tools:context=".HomeFragment"
-    android:layout_gravity="center"
-
+    android:layout_gravity="top"
+    android:background="@color/white"
     >
 
 
     <androidx.cardview.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
-        android:layout_gravity="center"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="200dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="15dp"
+        card_view:contentPadding="15dp"
+        card_view:cardUseCompatPadding="true"
         >
+
         <ImageView
             android:id="@+id/FindPark"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/find_park"
-           />
+            android:layout_height="174dp"
+            android:layout_gravity="top"
+            android:src="@drawable/find_park" />
         <TextView
             android:id="@+id/info_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_marginTop="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="FIND A PARK"/>
+            android:text="FIND A PARK!\nWe will find the park nearest to your destination."/>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="15dp"
+        card_view:contentPadding="15dp"
+        card_view:cardUseCompatPadding="true"
+        >
+
+        <ImageView
+            android:id="@+id/Park"
+            android:layout_width="wrap_content"
+            android:layout_height="174dp"
+            android:layout_gravity="top"
+            android:src="@drawable/phone" />
+        <TextView
+            android:id="@+id/info_text2"
+            android:layout_marginTop="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="PARK!\nUse your phone's bluetooth for park your vehicle into the selected spot."/>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="600dp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="15dp"
+        card_view:contentPadding="15dp"
+        card_view:cardUseCompatPadding="true"
+        >
+
+        <ImageView
+            android:id="@+id/History"
+            android:layout_width="wrap_content"
+            android:layout_height="174dp"
+            android:layout_gravity="top"
+            android:src="@drawable/chronology" />
+        <TextView
+            android:id="@+id/info_text3"
+            android:layout_marginTop="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="CHROLOGY\nSee the Chronology of your park and the payments."/>
     </androidx.cardview.widget.CardView>
 
 </FrameLayout>
+</ScrollView>

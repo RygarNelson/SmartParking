@@ -4,10 +4,11 @@
 
     <item
         android:id="@+id/about"
-        android:layout_gravity="left"
-        android:orderInCategory="1"
-        android:title="About"
+        android:layout_gravity="bottom"
 
-        >
-    </item>
+        android:onClick="About"
+
+
+        android:orderInCategory="1"
+        android:title="About"></item>
 </menu>

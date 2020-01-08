@@ -22,7 +22,7 @@
             android:background="@color/top_dark"
             android:minHeight="?attr/actionBarSize"
             app:titleTextColor="@android:color/white"
-            app:theme="@style/menu"
+            app:theme="@style/menu_toolbar"
             >
 
             <ImageView
