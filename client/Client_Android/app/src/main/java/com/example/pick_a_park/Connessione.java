@@ -42,7 +42,7 @@ public class Connessione extends AsyncTask<String, String, String> {
             urlConnection.setRequestProperty("Content-Type", "application/json; charset= utf-8");
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setRequestMethod(requestType);
-            urlConnection.setConnectTimeout(10000);
+            urlConnection.setConnectTimeout(1000);
             // Send the post body
             if (this.postData != null) {
                 OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());

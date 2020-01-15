@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
                 JSONObject token = new JSONObject(result);
                 JSONObject autistajs = new JSONObject(token.getString("autista"));
 
-
+                Parametri.profile_image = autistajs.getString("foto");
                 Parametri.Token = autistajs.getString("token");
                 Parametri.id = autistajs.getString("id");
                 Parametri.nome = autistajs.getString("nome");

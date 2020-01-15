@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -140,7 +141,6 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-
             android:background="@android:color/transparent"
             android:onClick="goToSignUp"
             android:text="Sign up for an account?"
@@ -149,7 +149,7 @@
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnCredential" />
+            app:layout_constraintTop_toBottomOf="@id/btnCredential" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
