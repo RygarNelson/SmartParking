@@ -12,7 +12,7 @@ router.post('/login', async (req, res) => {
     console.log(req.body)
     connection.getConnection(function (err, connection) {
         if (err) {
-            res.send({
+            res.status(400).send({
                 success: false,
                 error: err
             })
