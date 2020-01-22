@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="wrap_content"
+<ScrollView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/scroll"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<FrameLayout
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     tools:context=".HomeFragment"
@@ -15,16 +15,15 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/map_card"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         card_view:cardBackgroundColor="@color/white"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="15dp"
-        card_view:contentPadding="15dp"
         card_view:cardUseCompatPadding="true"
-        >
+        card_view:contentPadding="15dp">
 
         <ImageView
             android:id="@+id/FindPark"
@@ -32,13 +31,14 @@
             android:layout_height="174dp"
             android:layout_gravity="top"
             android:src="@drawable/find_park" />
+
         <TextView
             android:id="@+id/info_text"
-            android:layout_marginTop="200dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="FIND A PARK!\nWe will find the park nearest to your destination."/>
+            android:layout_marginTop="200dp"
+            android:text="FIND A PARK!\nWe will find the park nearest to your destination."
+            android:textColor="@color/black" />
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view2"

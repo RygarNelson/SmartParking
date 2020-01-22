@@ -35,10 +35,10 @@ public class Connessione extends AsyncTask<String, String, String> {
 
             // Create the urlConnection
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-
-            urlConnection.setDoInput(true);
-            urlConnection.setDoOutput(true);
-
+            if (requestType != "GET") {
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+            }
             urlConnection.setRequestProperty("Content-Type", "application/json; charset= utf-8");
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setRequestMethod(requestType);
