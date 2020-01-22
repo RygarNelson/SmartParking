@@ -32,8 +32,8 @@ app.use(function allowCrossDomain(req, res, next) {
 });
 
 /* MISCELLANEOUS */
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({'extended': true}))
+app.use(bodyParser.json({limit: '200mb'}))
+app.use(bodyParser.urlencoded({'extended': true, limit: '200mb'}))
 
 /* ROUTES */
 const authRoute = require("./routes/auth")

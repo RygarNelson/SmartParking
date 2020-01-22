@@ -41,7 +41,8 @@ router.post('/login', async (req, res) => {
                                     nome: results[0].firstname,
                                     cognome: results[0].lastname,
                                     dataDiNascita: results[0].date,
-                                    telefono: results[0].telephone
+                                    telefono: results[0].telephone,
+                                    tipo: results[0].type
                                 }
                             })
                         } else {
@@ -74,7 +75,7 @@ router.post('/register', async (req, res) => {
             
             let insertionArray = [JSONbody.email, userPass, JSONbody.nome, JSONbody.cognome, JSONbody.dataDiNascita, JSONbody.telefono, JSONbody.CF]
             //Inserisco Utente nel Database
-            connection.query("insert into users (id, email, password, firstname, lastname, date, telephone, fc, card) values (NULL,?,?,?,?,?,?,?,NULL);", insertionArray, function (err, results, fields){
+            connection.query("insert into users (id, email, password, firstname, lastname, date, telephone, fc, card, type) values (NULL,?,?,?,?,?,?,?,NULL,0);", insertionArray, function (err, results, fields){
                 connection.release()
                 if (err) {
                     res.status(400).send({
@@ -85,7 +86,7 @@ router.post('/register', async (req, res) => {
                     //200 - 
                     res.status(200).send({
                         successful: {
-                            info: "Benvenuto nuovo cliente!"
+                            info: "Benvenuto" + JSONbody.firstname + " " + JSONbody.lastname + " !"
                         }
                         //token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, userId))
                     })
