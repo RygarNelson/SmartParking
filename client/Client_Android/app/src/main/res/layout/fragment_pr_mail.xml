@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".PR_mail"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="0dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/MainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/login_background"
+        android:backgroundTint="#9903f0fc"
+        android:backgroundTintMode="src_over"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp">
+
+
+        <TextView
+            android:id="@+id/first_text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="100dp"
+            android:text="Forgot password?"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_launcher" />
+
+        <TextView
+            android:id="@+id/second_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Insert the e-mail into the text view below and follow the instructions."
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/first_text" />
+        <View
+            android:id="@+id/horizzontal_separator"
+            android:layout_marginTop="80dp"
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            android:textAlignment="center"
+            android:background="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/second_text" />
+
+        <TextView
+            android:id="@+id/third_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recovery"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizzontal_separator" />
+
+        <EditText
+            android:id="@+id/mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="125dp"
+            android:layout_marginEnd="32dp"
+            android:textColor="#F0F0F0"
+            android:backgroundTint="@color/white"
+            android:hint="@string/prompt_email"
+            android:textColorHint="@color/white"
+            android:inputType="textEmailAddress"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/third_text" />
+
+
+
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            android:background="@color/white"
+            android:text="SEND"
+            android:textAllCaps="true"
+            android:textColor="#03D3E2"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mail" />
+
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

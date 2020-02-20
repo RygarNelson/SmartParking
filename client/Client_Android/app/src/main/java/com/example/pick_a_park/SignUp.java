@@ -153,15 +153,20 @@ public class SignUp extends AppCompatActivity implements ConnessioneListener {
         String passwords = password.getText().toString();
         String passwordrs = passwordr.getText().toString();
 
-        if (passwords.compareTo(passwordrs) != 0 || passwords.length() < 1)
+        if (!passwords.equals(passwordrs))
         {
-            Toast.makeText(this, "ERRORE:\nLe password non corrispondenti.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "ERROR:\nPasswords are not equals.", Toast.LENGTH_LONG).show();
             return;
         }
         else
         if (nomes.length() < 1 || cognomes.length() < 1 || dataDinascitas.length() < 1 || telefonos.length() < 1 || mails.length() < 1)
         {
-            Toast.makeText(this, "ERRORE:\nDevi compilare tutti i campi.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "ERROR:\nFields can not be empty.", Toast.LENGTH_LONG).show();
+            return;
+        }else
+        if ( dataDinascitas.indexOf(" ") != -1 || telefonos.indexOf(" ") != -1 || mails.indexOf(" ") != -1 ||passwords.indexOf(" ") != -1 || passwordrs.indexOf(" ") != -1)
+        {
+            Toast.makeText(this, "ERROR:\nYou can not use space in password, mail, date or phone number.", Toast.LENGTH_LONG).show();
             return;
         }
 

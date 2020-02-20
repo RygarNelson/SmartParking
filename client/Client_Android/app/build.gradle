@@ -18,7 +18,9 @@ android {
         }
     }
 }
-
+repositories {
+    mavenCentral()
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -34,4 +36,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'com.google.android.material:material:1.1.0-alpha10'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.1'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v8:0.7.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v8:0.9.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-turf:5.0.0'
 }

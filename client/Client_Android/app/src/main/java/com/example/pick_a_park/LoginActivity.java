@@ -34,8 +34,8 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
     }
 
     public void goToPasswordRecovery(View view) {
-       // startActivity(new Intent(LoginActivity.this, PasswordRecoveryActivity.class));
-        finish();
+       startActivity(new Intent(LoginActivity.this, PasswordRecoveryActivity.class));
+       finish();
     }
 
     public void onClickLogin(View view) {
