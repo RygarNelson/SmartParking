@@ -1,43 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+tools:context=".FragmentProfile"
+android:divider="@android:color/transparent"
+android:dividerHeight="0dp">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/MainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    tools:context=".ProfileFragment">
+    android:backgroundTintMode="src_over"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="0dp">
+
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/empty_image"
         android:textAlignment="center"
-        android:layout_marginTop="25dp"/>
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/Name"
+        />
+
+
+
     <TextView
         android:id="@+id/Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NOME"
-        android:layout_alignParentRight="true"/>
-
+        android:text="Name Surname"
+        android:layout_marginRight="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="@id/img" />
     <TextView
+        android:id="@+id/Date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       android:layout_below="@id/Name"
-        android:layout_alignParentRight="true"
-        android:text="COGNOME"
-
-
+        android:text="Date"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/dark_gray"
+        android:textSize="10dp"
+        android:layout_marginTop="65dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="@id/img"
         />
     <TextView
+        android:id="@+id/Mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="E-MAIL"
-        android:layout_alignParentRight="true"/>
+        android:text="Mail"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/dark_gray"
+        android:textSize="10dp"
+        android:layout_marginTop="90dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="@id/img"
+        />
+    <View
+        android:id="@+id/horizzontal_separator"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:textAlignment="center"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@android:color/holo_red_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img" />
     <TextView
+        android:id="@+id/Info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SALDO"
-        android:layout_alignParentRight="true"/>
+        android:text="Recent Activity"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/black"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizzontal_separator"
+        />
+
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map_card"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Info"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="15dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="15dp">
 
 
-</RelativeLayout>
+
+        <TextView
+            android:id="@+id/info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Park Name:\n\nDate:\n\nPrenotation Time:\n\nLeave Time:\n\nParked Time:\n\nAmount:\n\n"
+            android:textColor="@color/black" />
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

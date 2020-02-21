@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
 
 
     public void goToSignUp(View view) {
-        startActivity(new Intent(LoginActivity.this, SignUp.class));
+        startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
         finish();
     }
 
@@ -64,8 +64,8 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
 
     private void sendDataForLogin(String username, String password) {
         // Avverto l'utente del tentativo di invio dei dati di login al server
-        caricamento = ProgressDialog.show(LoginActivity.this, "Login in corso",
-                "Connessione con il server in corso...", true);
+        caricamento = ProgressDialog.show(LoginActivity.this, "Login",
+                "Connection..", true);
         caricamento.show();
 
         JSONObject postData = new JSONObject();
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
     public void ResultResponse(String responseCode, String result) {
         if (responseCode == null) {
             caricamento.dismiss();
-            Toast.makeText(getApplicationContext(), "ERRORE:\nConnessione Assente o server offline.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "ERRORE:\nNo connection or server offline.", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
                 Parametri.email = autistajs.getString("email");
                 Parametri.telefono = autistajs.getString("telefono");
 
-                message = "Benvenuto " + Parametri.nome + ".";
+                message = "Welcome " + Parametri.nome + ".";
                 /*
                 // Tento l'estrazione dei dati della carta di credito
                 if (autistajs.has("carta_di_credito")) {
@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
                 }
                 */
             } catch (Exception e) {
-                message = "Errore di risposta del server.";
+                message = "Response Error.";
 
                 caricamento.dismiss();
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();

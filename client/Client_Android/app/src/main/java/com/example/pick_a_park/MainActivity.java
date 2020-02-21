@@ -7,33 +7,28 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.TextAppearanceSpan;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.File;
-
 public class MainActivity extends AppCompatActivity {
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        NavigationView nav;
+        final NavigationView nav;
         nav  = (NavigationView)findViewById(R.id.navigation);
+
         if (Parametri.profile_image != null) {
             byte[] decodedString = Base64.decode(Parametri.profile_image, Base64.DEFAULT);
             Bitmap foto = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -55,14 +50,21 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 // Handle item selection
                 switch (item.getItemId()) {
-                    case R.id.home:
-                        Toast.makeText(getApplicationContext(),"primo",Toast.LENGTH_SHORT).show();
+                    case R.id.Home:
+                        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        mDrawerLayout.closeDrawers();
+                        Home();
                         return true;
                     case R.id.Profile:
+                        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        mDrawerLayout.closeDrawers();
                         Profile();
                         return true;
-                    default:
-                        Toast.makeText(getApplicationContext(),item.getItemId(),Toast.LENGTH_SHORT).show();
+                    case R.id.Settings:
+                        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        mDrawerLayout.closeDrawers();
+                        Settings();
+                        return true;
                 }
 
                 return true;
@@ -98,17 +100,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void OpenFragment(){
-        HomeFragment firstFragment = new HomeFragment();
+        FragmentHome firstFragment = new FragmentHome();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, firstFragment,"HOME FRAGMENT").commit();
 
     }
     public void Profile(){
-        ProfileFragment fragment = new ProfileFragment();
+        FragmentProfile fragment = new FragmentProfile();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
     }
+    public void Home(){
+        FragmentHome fragment = new FragmentHome();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+    }
+    public void Settings(){
+        FragmentSettings fragment = new FragmentSettings();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+    }
+    public void Logout(View view){
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
+    }
     public void About(MenuItem item) {
-        AboutFragment fragment = new AboutFragment();
+        FragmentAbout fragment = new FragmentAbout();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
 
     }

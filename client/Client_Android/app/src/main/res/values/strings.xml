@@ -107,7 +107,7 @@
     <string name="uscita_park">Esci dal parcheggio</string>
     <string name="textBtnUscitaParcheggio">Invia codice uscita</string>
     <string name="textBtnEntra">Invia codice ingresso</string>
-    <string name="map_box_key">pk.eyJ1IjoicnlnYXJuZWxzb24iLCJhIjoiY2s1cGc3Y2U5MG5laDNtbnI2anMxOHV6bSJ9.6x1rwmkBNKxZ4ICVp7bVjQ</string>
+
     <string name="project_text">One of the most complex problem when you go to a city is certainly finding a parking space. Generally the best solution is to avoid the usage of private cars in favour of public transportation. Nonetheless the time spent to find a parking space has also negative effects on the total pollution of the area. A rough esteem can tell us that if you go around looking for a parking space for around 10 minutes at an average of 20Km/h you will drive for around 4km more, and in general with continuous start and stops making the total pollution effect wven wors with respect to a normal drive. The objective of the project is to minimize the distance and the time wasted in finding a parking space. For doing this our vision is that of an intelligent city with a deployed 5G infrastructure that reserves parking space for the minimal time needed in order to give to a driver the possibility to reach the parking space with the car.
 
 In order to make this vision real we imagine that each parking space has sensors that are able to recognize when the space is free or busy. Such information is then made available to a software management system that will be permit the management of such resources. In particular the following non exaustive list of users of the system are imagined:
@@ -117,4 +117,8 @@ the driver that accessing to the system will be able to indicate its final desti
 municipality police that will get informed when a car occupy a non authorized parking space so that they can get there to proceed with the removal of the car.
 Parking company that mantain the system working and establish the cost per hour of a parking space and so it is interested in the fact that the driver will be charged for using the parking space
 For the SPM exam the group has to implement the system described above using at least 4 iterations, in which the needed functionality are described as user stories that are then added to the product backlog and managed in the spring backlog. The management system has to provide a REST API in order to interact with the front end, that could be implemented just as a web application or more naturally using a mobile app to interact with the driver and the municipality police.</string>
+
+    <string name="map_box_key">pk.eyJ1IjoicnlnYXJuZWxzb24iLCJhIjoiY2s1cGc3Y2U5MG5laDNtbnI2anMxOHV6bSJ9.6x1rwmkBNKxZ4ICVp7bVjQ</string>
+    <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
+    <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
 </resources>
