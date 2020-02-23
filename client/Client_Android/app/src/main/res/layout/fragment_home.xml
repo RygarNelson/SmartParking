@@ -41,7 +41,7 @@
             android:textColor="@color/black" />
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_view2"
+        android:id="@+id/bluetooth_card"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="300dp"
@@ -67,7 +67,7 @@
             android:text="PARK!\nUse your phone's bluetooth for park your vehicle into the selected spot."/>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_view3"
+        android:id="@+id/chronology_card"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="600dp"

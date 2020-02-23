@@ -2,6 +2,7 @@ package com.example.pick_a_park;
 
 import android.location.Location;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Parametri {
@@ -30,14 +31,11 @@ public class Parametri {
     public static int TEMPO_EXTRA = 20 * 60 * 1000; // 20 minuti
 
     // Dati carta di credito
-    public static String numero_carta = null;
-    public static String data_di_scadenza = null;
-    public static String pin = null;
+   public static ArrayList<Card> cards = null;
 
     // Parcheggi e prenotazioni
     /*
-    static List<Parcheggio> parcheggi = null;
-    static List<Parcheggio> parcheggi_vicini = null;
+
     static List<Prenotazione> prenotazioniInCorso = null;
     static List<PrenotazionePassata> prenotazioniVecchie = null;
     static List<PrenotazioneDaPagare> prenotazioniDaPagare = null;

@@ -34,6 +34,22 @@ public class FragmentHome extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
             }
         });
+        CardView chronologyCard = (CardView) view.findViewById(R.id.chronology_card);
+        chronologyCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentChronology fragment = new FragmentChronology();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+            }
+        });
+        CardView bluetoothCard = (CardView) view.findViewById(R.id.bluetooth_card);
+        bluetoothCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentBluetooth fragment = new FragmentBluetooth();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+            }
+        });
         // Inflate the layout for this fragment
         return view;
     }

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragmentPayment"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="0dp">
+    <TextView
+        android:id="@+id/Payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="20dp"
+        android:text="PAYMENT"
+        android:textAlignment="center"
+        android:textColor="@color/mapboxBlue"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutVisualizza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_card"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:background="@drawable/ic_card_bg"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+
+                    <ImageView
+                        android:layout_width="@dimen/chip_width"
+                        android:layout_height="@dimen/chip_height"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="@dimen/items_inbetween"
+                        android:src="@drawable/ic_chip" />
+
+                    <TextView
+                        android:id="@+id/tv_card_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_number_sample"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/header_text" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/items_inbetween_small"
+                            android:text="Expire Date:"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                        <TextView
+                            android:id="@+id/tv_validity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/card_validity_sample"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_member_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_name_sample"
+                        android:textAllCaps="true"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/medium_text" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivType"
+                    android:layout_width="@dimen/cardtype_width"
+                    android:layout_height="@dimen/cardtype_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="@dimen/items_inbetween_small"
+                    android:layout_marginBottom="@dimen/items_inbetween_small" />
+
+            </RelativeLayout>
+
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/MainLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTintMode="src_over"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp">
+
+
+            <TextView
+                android:id="@+id/Data"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:text="\tAdditional Data"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_launcher" />
+
+            <TextView
+                android:id="@+id/CCV"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="\nCCV"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Data" />
+            <EditText
+                android:id="@+id/CCV_data"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/CCV"/>
+
+
+            <View
+                android:id="@+id/horizzontal_separator"
+                android:layout_width="80dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="8dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/CCV_data" />
+
+
+            <TextView
+                android:id="@+id/Amount"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Amount: "
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="100dp"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Data" />
+
+
+           <Button
+               android:id="@+id/btnCancel"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               android:text="Send"
+               android:layout_marginTop="60dp"
+               android:layout_marginLeft="30dp"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="@id/btnSend"
+               app:layout_constraintTop_toBottomOf="@+id/Amount"
+               app:layout_constraintLeft_toLeftOf="@id/btnSend"/>
+            <Button
+                android:id="@+id/btnSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="cancel"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="60dp"
+                app:layout_constraintEnd_toEndOf="@id/btnCancel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Amount"
+                app:layout_constraintRight_toRightOf="@id/btnCancel"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

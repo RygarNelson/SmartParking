@@ -121,4 +121,20 @@ For the SPM exam the group has to implement the system described above using at 
     <string name="map_box_key">pk.eyJ1IjoicnlnYXJuZWxzb24iLCJhIjoiY2s1cGc3Y2U5MG5laDNtbnI2anMxOHV6bSJ9.6x1rwmkBNKxZ4ICVp7bVjQ</string>
     <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
     <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
+
+    <!--Card -->
+
+
+    <string name="card_header">NFN CARD</string>
+    <string name="card_number_sample">XXXX XXXX XXXX XXXX</string>
+    <string name="card_validity_label">VALID UPTO</string>
+    <string name="card_validity_sample">MM/YY</string>
+    <string name="card_name_sample">CARD HOLDER</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="card_holders_name">Card Holder\'s Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="card_validity">Expires</string>
+    <string name="card_cvv">CVV/CVC Number</string>
 </resources>

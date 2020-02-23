@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FragmentSelectCard">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="777dp">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutVisualizza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+            <TextView
+                android:id="@+id/Payment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="20dp"
+                android:text="Select your card!"
+                android:textAlignment="center"
+                android:textColor="@color/mapboxBlue"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <RelativeLayout
+                android:id="@+id/rl_card"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:background="@drawable/ic_card_bg"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+
+                    <ImageView
+                        android:layout_width="@dimen/chip_width"
+                        android:layout_height="@dimen/chip_height"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="@dimen/items_inbetween"
+                        android:backgroundTint="#50000000"
+                        android:src="@drawable/ic_chip" />
+
+                    <TextView
+                        android:id="@+id/tv_card_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_number_sample"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/header_text" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/items_inbetween_small"
+                            android:text="Expire Date:"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                        <TextView
+                            android:id="@+id/tv_validity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/card_validity_sample"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_member_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_name_sample"
+                        android:textAllCaps="true"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/medium_text" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/card_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="@dimen/items_inbetween_small"
+                    android:text="Add New Card"
+                    android:textColor="@color/white"
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivType"
+                    android:layout_width="@dimen/cardtype_width"
+                    android:layout_height="@dimen/cardtype_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="@dimen/items_inbetween_small"
+                    android:layout_marginBottom="@dimen/items_inbetween_small" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_card0"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:background="@drawable/ic_card_bg"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:visibility="invisible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+
+                    <ImageView
+                        android:layout_width="@dimen/chip_width"
+                        android:layout_height="@dimen/chip_height"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="@dimen/items_inbetween"
+                        android:backgroundTint="#50000000"
+                        android:src="@drawable/ic_chip" />
+
+                    <TextView
+                        android:id="@+id/tv_card_number0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_number_sample"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/header_text" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/items_inbetween_small"
+                            android:text="Expire Date:"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                        <TextView
+                            android:id="@+id/tv_validity0"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/card_validity_sample"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_member_name0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_name_sample"
+                        android:textAllCaps="true"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/medium_text" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivType0"
+                    android:layout_width="@dimen/cardtype_width"
+                    android:layout_height="@dimen/cardtype_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="@dimen/items_inbetween_small"
+                    android:layout_marginBottom="@dimen/items_inbetween_small" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_card1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:background="@drawable/ic_card_bg"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:visibility="invisible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+
+                    <ImageView
+                        android:layout_width="@dimen/chip_width"
+                        android:layout_height="@dimen/chip_height"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="@dimen/items_inbetween"
+                        android:backgroundTint="#50000000"
+                        android:src="@drawable/ic_chip" />
+
+                    <TextView
+                        android:id="@+id/tv_card_number1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_number_sample"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/header_text" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/items_inbetween_small"
+                            android:text="Expire Date:"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                        <TextView
+                            android:id="@+id/tv_validity1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/card_validity_sample"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_member_name1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_name_sample"
+                        android:textAllCaps="true"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/medium_text" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivType1"
+                    android:layout_width="@dimen/cardtype_width"
+                    android:layout_height="@dimen/cardtype_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="@dimen/items_inbetween_small"
+                    android:layout_marginBottom="@dimen/items_inbetween_small" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_card2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:background="@drawable/ic_card_bg"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:visibility="invisible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin">
+
+
+                    <ImageView
+                        android:layout_width="@dimen/chip_width"
+                        android:layout_height="@dimen/chip_height"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="@dimen/items_inbetween"
+                        android:backgroundTint="#50000000"
+                        android:src="@drawable/ic_chip" />
+
+                    <TextView
+                        android:id="@+id/tv_card_number2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_number_sample"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/header_text" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/items_inbetween_small"
+                            android:text="Expire Date:"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                        <TextView
+                            android:id="@+id/tv_validity2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/card_validity_sample"
+                            android:textColor="@color/card_text_color"
+                            android:textSize="@dimen/xsmall_text" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_member_name2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:text="@string/card_name_sample"
+                        android:textAllCaps="true"
+                        android:textColor="@color/card_text_color"
+                        android:textSize="@dimen/medium_text" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivType2"
+                    android:layout_width="@dimen/cardtype_width"
+                    android:layout_height="@dimen/cardtype_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="@dimen/items_inbetween_small"
+                    android:layout_marginBottom="@dimen/items_inbetween_small" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

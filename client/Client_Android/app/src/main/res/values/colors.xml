@@ -15,4 +15,11 @@
     <color name="mapboxPink">#ee4e8b</color>
     <color name="mapboxYellow">#d9d838</color>
     <color name="mapboxRed">#b43b71</color>
+
+    <!--CArd -->
+    <color name="card_text_color">#FFFFFF</color>
+    <color name="card_label_color">#D4D9DC</color>
+    <color name="card_cvv_color">#383838</color>
+    <color name="CTA_text">#FFFFFF</color>
+    <color name="CTA_bg">#32C25E</color>
 </resources>
