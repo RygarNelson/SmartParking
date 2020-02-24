@@ -143,6 +143,23 @@ router.post('/history/get', async (req,res) => {
     })
 })
 
+/** Card: Get */
+router.post('/card/get', async (req,res) => {
+    connection.query('SELECT * FROM cards where userEmail = ?', [req.body.email], function (err, results, fields){
+        if (err) {
+            console.log(err)
+            res.status(400).send({
+                success: false,
+                error: err
+            })
+        } else {
+            res.status(200).send({
+                cards: results
+            })
+        }
+    })
+})
+
 /** Book a parking */
 router.post ('/parking/book', async (req,res) => {
     //Controllo se il parcheggio è libero
