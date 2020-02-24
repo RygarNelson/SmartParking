@@ -256,4 +256,33 @@ router.post('/parking/payment', async (req,res) => {
     })
 })
 
+/** Parking: Departure */
+router.post('/parking/departure', async (req,res) => {
+
+    //Imposto la storia dell'utente
+    connection.query('UPDATE history SET dateDeparture = ?, code = 2 WHERE userEmail = ? && idParking = ?', [new Date(), req.body.email, req.body.idParking], function (err, results, fields){
+        if (err) {
+            console.log(err)
+            res.status(400).send({
+                success: false,
+                error: err
+            })
+        } else {
+            
+            //Libero il parcheggio
+            connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [req.body.idParking], function (err, results, fields){
+                if (err) {
+                    console.log(err)
+                    res.status(400).send({
+                        success: false,
+                        error: err
+                    })
+                } else {
+                    res.status(200).send()
+                }
+            })
+        }
+    })
+})
+
 module.exports = router
