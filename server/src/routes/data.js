@@ -126,4 +126,21 @@ router.post('/recover_password/password', async (req, res) => {
     })
 })
 
+/** History: Get*/
+router.post('/history/get', async (req,res) => {
+    connection.query('SELECT * FROM history WHERE userEmail = ?', [req.body.email], function (err, results, fields) {
+        if (err) {
+            console.log(err)
+            res.status(400).send({
+                success: false,
+                error: err
+            })
+        } else {
+            res.status(200).send({
+                history: results
+            })
+        }
+    })
+})
+
 module.exports = router
