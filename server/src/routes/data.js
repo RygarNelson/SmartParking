@@ -143,4 +143,60 @@ router.post('/history/get', async (req,res) => {
     })
 })
 
+/** Book a parking */
+router.post ('/parking/book', async (req,res) => {
+    //Controllo se il parcheggio è libero
+    console.log(req.body.parkId)
+    connection.query('SELECT * FROM parkings WHERE id = ?',[req.body.idParking], function (err, results, fields){
+        if (err) {
+            console.log(err)
+            res.status(400).send({
+                success: false,
+                error: err
+            })
+        } else {
+            if (results.length === 0) {
+                res.status(400).send({
+                    success: false,
+                    error: "Parking not existing"
+                })
+            } else {
+                if(results[0].code != 0){
+                    res.status(400).send({
+                        success: false,
+                        error: "Parking not free"
+                    })
+                } else {
+                    
+                    //Il parcheggio è libero. Lo occupo
+                    connection.query('UPDATE parkings SET code = 1 WHERE id = ?', [req.body.idParking], function (err, results, fields){
+                        if (err) {
+                            console.log(err)
+                            res.status(400).send({
+                                success: false,
+                                error: err
+                            })
+                        } else {
+
+                            //Lo metto nella cronologia dell'utente
+                            connection.query('INSERT INTO history (id, userEmail, idParking, dateDeparture, dateArrival, cashAmount, code)'+
+                                ' VALUES (NULL,?,?,NULL,NULL,?,0)', [req.body.email, req.body.idParking, req.body.cash], function (err, results, fields){
+                                if (err) {
+                                    console.log(err)
+                                    res.status(400).send({
+                                        success: false,
+                                        error: err
+                                    })
+                                } else {
+                                    res.status(200).send()
+                                }
+                            })
+                        }
+                    })
+                }
+            }
+        }
+    })
+})
+
 module.exports = router
