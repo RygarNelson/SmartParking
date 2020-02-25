@@ -89,9 +89,8 @@ router.post('/card/new', async (req,res) => {
 
 /** Book a parking */
 router.post ('/parking/book', async (req,res) => {
-    //Controllo se il parcheggio è libero
-    
-    connection.query('SELECT * FROM parkings WHERE id = ?',[req.body.idParking], function (err, results, fields){
+    //Ritrovo il parcheggio dalle coordinate
+    connection.query("SELECT * FROM parkings WHERE lat = ? || 'long' = ?", [req.body.lat, req.body.long], function (err, results, fields){
         if (err) {
             console.log(err)
             res.status(400).send({
@@ -111,9 +110,10 @@ router.post ('/parking/book', async (req,res) => {
                         error: "Parking not free"
                     })
                 } else {
-                    
+                    let idParking = results[0].id
+
                     //Il parcheggio è libero. Lo occupo
-                    connection.query('UPDATE parkings SET code = 1 WHERE id = ?', [req.body.idParking], function (err, results, fields){
+                    connection.query('UPDATE parkings SET code = 1 WHERE id = ?', [idParking], function (err, results, fields){
                         if (err) {
                             console.log(err)
                             res.status(400).send({
@@ -124,7 +124,7 @@ router.post ('/parking/book', async (req,res) => {
 
                             //Lo metto nella cronologia dell'utente
                             connection.query('INSERT INTO history (id, userEmail, idParking, dateDeparture, dateArrival, cashAmount, code)'+
-                                ' VALUES (NULL,?,?,NULL,NULL,0,0)', [req.body.email, req.body.idParking], function (err, results, fields){
+                                ' VALUES (NULL,?,?,NULL,NULL,0,0)', [req.body.email, idParking], function (err, results, fields){
                                 if (err) {
                                     console.log(err)
                                     res.status(400).send({
