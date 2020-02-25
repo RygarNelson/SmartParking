@@ -90,7 +90,7 @@ router.post('/card/new', async (req,res) => {
 /** Book a parking */
 router.post ('/parking/book', async (req,res) => {
     //Controllo se il parcheggio è libero
-    console.log(req.body.parkId)
+    
     connection.query('SELECT * FROM parkings WHERE id = ?',[req.body.idParking], function (err, results, fields){
         if (err) {
             console.log(err)
@@ -124,7 +124,7 @@ router.post ('/parking/book', async (req,res) => {
 
                             //Lo metto nella cronologia dell'utente
                             connection.query('INSERT INTO history (id, userEmail, idParking, dateDeparture, dateArrival, cashAmount, code)'+
-                                ' VALUES (NULL,?,?,NULL,NULL,?,0)', [req.body.email, req.body.idParking, req.body.cash], function (err, results, fields){
+                                ' VALUES (NULL,?,?,NULL,NULL,0,0)', [req.body.email, req.body.idParking], function (err, results, fields){
                                 if (err) {
                                     console.log(err)
                                     res.status(400).send({
@@ -145,7 +145,6 @@ router.post ('/parking/book', async (req,res) => {
 
 /** Parking: Payment */
 router.post('/parking/payment', async (req,res) => {
-    
     //Controllo se la carta esiste
     connection.query('SELECT * FROM cards WHERE userEmail = ? && card = ?', [req.body.email, req.body.card], function (err, results, fields){
         if (err) {
@@ -180,8 +179,8 @@ router.post('/parking/payment', async (req,res) => {
                             })
                         } else {
 
-                            //Aggiorno lo stato del parcheggio
-                            connection.query('UPDATE history SET dateArrival = ?, code = 1 WHERE userEmail = ? && idParking = ?', [new Date(), req.body.email, req.body.idParking], function (err, results, fields){
+                            //Prendo il parcheggio dalla prenotazione
+                            connection.query('SELECT * FROM history WHERE userEmail = ? && code = 0', [req.body.email], function (err, results, fields){
                                 if (err) {
                                     console.log(err)
                                     res.status(400).send({
@@ -189,7 +188,20 @@ router.post('/parking/payment', async (req,res) => {
                                         error: err
                                     })
                                 } else {
-                                    res.status(200).send()
+                                    let idParking = results[results.length-1].idParking
+
+                                    //Aggiorno lo stato del parcheggio
+                                    connection.query('UPDATE history SET dateArrival = ?, cashAmount = ?, code = 1 WHERE userEmail = ? && idParking = ?', [new Date(), req.body.cash, req.body.email, idParking], function (err, results, fields){
+                                        if (err) {
+                                            console.log(err)
+                                            res.status(400).send({
+                                                success: false,
+                                                error: err
+                                            })
+                                        } else {
+                                            res.status(200).send()
+                                        }
+                                    })
                                 }
                             })
                         }
@@ -202,9 +214,8 @@ router.post('/parking/payment', async (req,res) => {
 
 /** Parking: Departure */
 router.post('/parking/departure', async (req,res) => {
-
-    //Imposto la storia dell'utente
-    connection.query('UPDATE history SET dateDeparture = ?, code = 2 WHERE userEmail = ? && idParking = ?', [new Date(), req.body.email, req.body.idParking], function (err, results, fields){
+     //Prendo il parcheggio dalla prenotazione
+     connection.query('SELECT * FROM history WHERE userEmail = ? && code = 1', [req.body.email], function (err, results, fields){
         if (err) {
             console.log(err)
             res.status(400).send({
@@ -212,9 +223,10 @@ router.post('/parking/departure', async (req,res) => {
                 error: err
             })
         } else {
-            
-            //Libero il parcheggio
-            connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [req.body.idParking], function (err, results, fields){
+            let idParking = results[results.length-1].idParking
+
+            //Imposto la storia dell'utente
+            connection.query('UPDATE history SET dateDeparture = ?, code = 2 WHERE userEmail = ? && idParking = ?', [new Date(), req.body.email, idParking], function (err, results, fields){
                 if (err) {
                     console.log(err)
                     res.status(400).send({
@@ -222,11 +234,23 @@ router.post('/parking/departure', async (req,res) => {
                         error: err
                     })
                 } else {
-                    res.status(200).send()
+                    
+                    //Libero il parcheggio
+                    connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [idParking], function (err, results, fields){
+                        if (err) {
+                            console.log(err)
+                            res.status(400).send({
+                                success: false,
+                                error: err
+                            })
+                        } else {
+                            res.status(200).send()
+                        }
+                    })
                 }
             })
         }
-    })
+     })
 })
 
 module.exports = router
