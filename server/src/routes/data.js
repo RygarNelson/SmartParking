@@ -11,7 +11,6 @@ const { connection } = require('../db')
 
 /** Parkings */
 router.get('/parkings', async (req, res) => {
-        
     connection.query("select * from parkings", function (err, results, fields) {
         connection.release()
         if (err) {
@@ -44,6 +43,30 @@ router.post('/history/get', async (req,res) => {
     })
 })
 
+/** History: Ongoing books */
+router.post('/history/ongoing', async (req,res) => {
+    connection.query('SELECT * FROM history WHERE email = ? && code = 1', [req.body.email], function (err, results, fields){
+        if (err) {
+            console.log(err)
+            res.status(400).send({
+                success: false,
+                error: err
+            })
+        } else {
+            if (results.length === 0) {
+                res.status(400).send({
+                    success: false,
+                    error: "No book ongoing"
+                })
+            } else {
+                res.status(200).send({
+                    book: results[0]
+                })
+            }
+        }
+    })
+})
+
 /** Card: Get */
 router.post('/card/get', async (req,res) => {
     connection.query('SELECT * FROM cards where userEmail = ?', [req.body.email], function (err, results, fields){
@@ -63,7 +86,6 @@ router.post('/card/get', async (req,res) => {
 
 /** Card: New */
 router.post('/card/new', async (req,res) => {
-    
     //Controllo la validità del numero della carta
     if(dataMethods.checkCardNumber(req.body.card)){
 
