@@ -12,15 +12,15 @@
   "author": "Daniele Moscati, Luca Marasca, Alessandro Silveri",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^3.0.8",
     "cors": "^2.8.4",
     "express": "^4.16.3",
-    "helmet": "^3.12.1",
+    "helmet": "^3.21.3",
     "jsonwebtoken": "^8.3.0",
-    "morgan": "^1.9.0",
+    "morgan": "^1.9.1",
     "mysql": "^2.15.0",
     "nodemailer": "^4.7.0",
-    "npm": "^6.2.0",
+    "npm": "^6.13.7",
     "rimraf": "^2.6.2"
   }
 }
