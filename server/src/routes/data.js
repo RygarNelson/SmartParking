@@ -160,6 +160,32 @@ router.post('/card/get', async (req,res) => {
     })
 })
 
+/** Card: New */
+router.post('/card/new', async (req,res) => {
+    
+    //Controllo la validità del numero della carta
+    if(dataMethods.checkCardNumber(req.body.card)){
+
+        //Inserisco la carta nel database
+        connection.query('INSERT INTO cards (id, userEmail, card, amount) VALUES (NULL,?,?,?)', [req.body.email,req.body.card,req.body.amount], function (err, results, fields){
+            if (err) {
+                console.log(err)
+                res.status(400).send({
+                    success: false,
+                    error: err
+                })
+            } else {
+                res.status(200).send()
+            }
+        })
+    } else {
+        res.status(400).send({
+            success: false,
+            error: "Card is invalid"
+        })
+    }
+})
+
 /** Book a parking */
 router.post ('/parking/book', async (req,res) => {
     //Controllo se il parcheggio è libero
