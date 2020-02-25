@@ -1,14 +1,26 @@
 package com.example.pick_a_park;
 
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RemoteViews;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,7 +29,6 @@ import android.widget.TextView;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentSelectCard extends Fragment {
-
 
     public FragmentSelectCard() {
         // Required empty public constructor
@@ -29,65 +40,82 @@ public class FragmentSelectCard extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_fragment_select_card, container, false);
-        TextView tv = (TextView) view.findViewById(R.id.card_select);
+        TextView tv =  view.findViewById(R.id.card_select);
         tv.setRotation(-45);
         View main = view.findViewById(R.id.linearLayoutVisualizza);
-        View []children  = new RelativeLayout[Parametri.cards.size()];
+
         TextView []card_numbers =  new TextView[Parametri.cards.size()];
         TextView []validities =  new TextView[Parametri.cards.size()];
         TextView []names =  new TextView[Parametri.cards.size()];
+        //Array di view inerenti alle carte
+        View []children =  new View[Parametri.cards.size()];
 
-        if(Parametri.cards.size()==1) {
-            children[0] = view.findViewById(R.id.rl_card0);
-            children[0].setVisibility(View.VISIBLE);
-            card_numbers[0] = view.findViewById(R.id.tv_card_number0);
-            card_numbers[0].setText((Integer.toString(Parametri.cards.get(0).code)));
-            validities[0] = view.findViewById(R.id.tv_validity0);
-            validities[0].setText(Parametri.cards.get(0).expire);
-            names[0] = view.findViewById(R.id.tv_member_name0);
-            names[0].setText(Parametri.cards.get(0).name);
-            ((LinearLayout) main).addView(card_numbers[0]);
-            ((LinearLayout) main).addView(validities[0]);
-            ((LinearLayout) main).addView(names[0]);
-        }
-        if(Parametri.cards.size()==2) {
-            children[0] = view.findViewById(R.id.rl_card0);
-            children[0].setVisibility(View.VISIBLE);
-            children[0].setOnClickListener(new View.OnClickListener(){
+
+        float density = getContext().getResources()
+                .getDisplayMetrics()
+                .density;
+        int width = Math.round((float) 230 * density);
+        for (int i = 0; i < Parametri.cards.size(); i++)
+        {
+            final int x = i;
+            children[i] = LayoutInflater.from(getContext()).inflate(R.layout.fragment_fragment_select_card, null);
+
+            children[i].findViewById(R.id.Payment).setVisibility(View.GONE);
+            //Tolgo la scritta aggiungi nuova carta
+            children[i].findViewById(R.id.card_select1).setVisibility(View.INVISIBLE);;
+
+            //Setto il codice della carta
+            card_numbers[i] = children[i].findViewById(R.id.tv_card_number1);
+            card_numbers[i].setText(Integer.toString(Parametri.cards.get(i).code));
+            //setto la data di scadenza
+            validities[i] = children[i].findViewById(R.id.tv_validity1);
+            validities[i].setText(Parametri.cards.get(i).expire);
+            //setto il nome del proprietario
+            names[i] = children[i].findViewById(R.id.tv_member_name1);
+            names[i].setText(Parametri.cards.get(i).name);
+          
+
+            children[i].findViewById(R.id.rl_card1).setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, width));
+            children[i].findViewById(R.id.rl_card1).setVisibility(View.VISIBLE);
+            children[i].findViewById(R.id.rl_card).setVisibility(View.GONE);
+            children[i].findViewById(R.id.rl_card1).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view){
-                    FragmentPayment fragment = new FragmentPayment();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+                public void onClick(View view) {
+
+                    Payment(x);
                 }
             });
-            card_numbers[0] = view.findViewById(R.id.tv_card_number0);
-            card_numbers[0].setText((Integer.toString(Parametri.cards.get(0).code)));
-            validities[0] = view.findViewById(R.id.tv_validity0);
-            validities[0].setText(Parametri.cards.get(0).expire);
-            names[0] = view.findViewById(R.id.tv_member_name0);
-            names[0].setText(Parametri.cards.get(0).name);
-
-
-            children[1] = view.findViewById(R.id.rl_card1);
-            children[1].setVisibility(View.VISIBLE);
-            children[1].setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    FragmentPayment fragment = new FragmentPayment();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
-                }
-            });
-            card_numbers[1] = view.findViewById(R.id.tv_card_number1);
-            card_numbers[1].setText((Integer.toString(Parametri.cards.get(1).code)));
-            validities[1] = view.findViewById(R.id.tv_validity1);
-            validities[1].setText(Parametri.cards.get(1).expire);
-            names[1] = view.findViewById(R.id.tv_member_name1);
-            names[1].setText(Parametri.cards.get(1).name);
+            ((LinearLayout) main).addView(children[i]);
 
         }
 
+        main.findViewById(R.id.rl_card).getBackground().setColorFilter(Color.parseColor("#C4C4C4"),PorterDuff.Mode.ADD);
+        main.findViewById(R.id.rl_card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AddCard();
+            }
+        });
+        //Blank space at the end (Graphics only)
+        View blank = new View(getContext());
+        blank.setVisibility(View.INVISIBLE);
+        int height = Math.round((float) 50 * density);
+        blank.setLayoutParams(new LinearLayout.LayoutParams(height, height));
+        ((LinearLayout) main).addView(blank);
         // Inflate the layout for this fragment
         return view;
     }
-
+    public void Payment(int x){
+        //Avvia il fragment di pagamento:
+        FragmentPayment fragment = new FragmentPayment();
+        Bundle data = new Bundle();
+        data.putInt("card_number", x);
+        fragment.setArguments(data);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+    }
+    public void AddCard(){
+        FragmentAddCard fragment = new FragmentAddCard();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.pick_a_park;
 
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -14,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -28,8 +31,8 @@ import static android.widget.ListPopupWindow.WRAP_CONTENT;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentChronology extends Fragment {
-
+public class FragmentChronology extends Fragment implements ConnessioneListener{
+    private ProgressDialog caricamento = null;
     ArrayList<Prenotazione> prenotazioni;
 
     public FragmentChronology() {
@@ -41,13 +44,15 @@ public class FragmentChronology extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragment_chronology, container, false);
-
+       // sendDataGetPark();
         GetPrenotazioni();
         CreaUI(view);
+
 
         // Inflate the layout for this fragment
         return view;
     }
+    //METODO SERVER OFFLINE, metto i parcheggi a mano
     public void GetPrenotazioni(){
         prenotazioni = new ArrayList<Prenotazione>();
         //Simulo qualche prenotazione a mano
@@ -107,6 +112,55 @@ public class FragmentChronology extends Fragment {
             ((LinearLayout) linearLayout).addView(separators[i]);
 
         }
+    }
+    //Chiedo La lista dei parcheggi al server
+    private void sendDataGetPark() {
+        // Avverto l'utente del tentativo di invio dei dati di login al server
+        caricamento = ProgressDialog.show(getContext(), "Login",
+                "Connection...", true);
+        caricamento.show();
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("email", Parametri.email);
+
+        } catch (Exception e) {
+            caricamento.dismiss();
+            return;
+        }
+
+        Connessione conn = new Connessione(postData, "POST");
+        conn.addListener(this);
+        conn.execute(Parametri.IP + "/api/data/history/get");
+    }
+
+    @Override
+    public void ResultResponse(String responseCode, String result) {
+        if (responseCode == null) {
+            caricamento.dismiss();
+            Toast.makeText(getContext(), "ERROR:\nNo connection or Server Offline.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (responseCode.equals("400")) {
+            String message = Connessione.estraiErrore(result);
+            caricamento.dismiss();
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (responseCode.equals("200")) {
+            caricamento.dismiss();
+            Fragment_PR_password fragment = new Fragment_PR_password();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+
+
+
+
+
+        }
+
+
+
     }
 
 }

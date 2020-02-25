@@ -111,8 +111,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gps_description" />
         <TextView
+            android:id="@+id/nearest_park"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\n\tEnable Nearest Park"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/nearest_park_button"
+            app:layout_constraintTop_toBottomOf="@+id/horizzontal_separator2" />
+        <Switch
+            android:id="@+id/nearest_park_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="\n"
+            app:layout_constraintRight_toRightOf="@+id/nearest_park"
+            app:layout_constraintTop_toBottomOf="@+id/horizzontal_separator2"
+            />
+        <TextView
+            android:id="@+id/nearest_park_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tEnable the nearest park finding, in case some parks will be free\n\tduring the navigation\n"
+            android:layout_marginTop="5dp"
+            android:textSize="10dp"
+            android:textColor="@color/dark_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/nearest_park_button"
+            app:layout_constraintTop_toBottomOf="@+id/nearest_park" />
+        <View
+            android:id="@+id/horizzontal_separator3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:textAlignment="center"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nearest_park_info" />
+        <TextView
             android:id="@+id/about"
-
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:colorControlHighlight="@color/black"
@@ -125,9 +166,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/language_selection"
-            app:layout_constraintTop_toBottomOf="@+id/horizzontal_separator2" />
+            app:layout_constraintTop_toBottomOf="@+id/horizzontal_separator3" />
         <View
-            android:id="@+id/horizzontal_separator3"
+            android:id="@+id/horizzontal_separator4"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:textAlignment="center"

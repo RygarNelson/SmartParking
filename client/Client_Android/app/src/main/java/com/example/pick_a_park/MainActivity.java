@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -28,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final NavigationView nav;
         nav  = (NavigationView)findViewById(R.id.navigation);
-
+        View header1 = nav.getHeaderView(0);
+        TextView mail = header1.findViewById(R.id.email);
+        mail.setText(Parametri.email);
         if (Parametri.profile_image != null) {
             byte[] decodedString = Base64.decode(Parametri.profile_image, Base64.DEFAULT);
             Bitmap foto = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);

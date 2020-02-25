@@ -25,7 +25,7 @@ public class Parametri {
     public static String cognome = null;
     public static String data_nascita = null;
     public static String telefono = null;
-    public static String saldo = null;
+    public static boolean nearest_park = true;
     public static Location lastKnowPosition = null;
     public static int TEMPO_AVVISO = 5 * 60 * 1000; // 5 minuti
     public static int TEMPO_EXTRA = 20 * 60 * 1000; // 20 minuti

@@ -2,6 +2,7 @@ package com.example.pick_a_park;
 
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -74,6 +75,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentMap extends Fragment implements ConnessioneListener{
+    private ProgressDialog caricamento = null;
     private int selected_park;
     private List<Point> parks;
     private MapView mapView;
@@ -99,6 +101,8 @@ public class FragmentMap extends Fragment implements ConnessioneListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
+        if(Parametri.nearest_park)
+            LaunchThread();
         selected_park = 0;
         parks = new ArrayList<>();
         Mapbox.getInstance(getActivity().getApplicationContext(), getString(R.string.map_box_key));
@@ -348,7 +352,7 @@ public class FragmentMap extends Fragment implements ConnessioneListener{
 
 
         Point destination = Point.fromLngLat(longit, lat);
-        if (selected_park == parks.size())
+        if (selected_park == parks.size() || selected_park == 6)
             selected_park = 0;
 
         //My location
@@ -368,15 +372,58 @@ public class FragmentMap extends Fragment implements ConnessioneListener{
         getActivity().findViewById(R.id.startButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PrenotaParcheggio(parks.get(selected_park));
                 boolean simulateRoute = true;
                 NavigationLauncherOptions options = NavigationLauncherOptions.builder()
                         .directionsRoute(currentRoute)
                         .shouldSimulateRoute(simulateRoute)
                         .build();
+
                 // Call this method with Context from within an Activity
                 NavigationLauncher.startNavigation(getActivity(), options);
             }
         });
         Toast.makeText(getActivity(),"DISTANCE: "+distance,Toast.LENGTH_SHORT).show();
+    }
+    public void PrenotaParcheggio(Point park){
+        // Avverto l'utente del tentativo di invio dei dati di login al server
+        caricamento = ProgressDialog.show(getContext(), "Login",
+                "Connection...", true);
+        caricamento.show();
+
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("email", Parametri.email);
+            postData.put("lat", park.latitude());
+            postData.put("long",park.longitude());
+
+
+        } catch (Exception e) {
+            caricamento.dismiss();
+            return;
+        }
+
+        Connessione conn = new Connessione(postData, "POST");
+        conn.addListener(this);
+        conn.execute(Parametri.IP + "/api/data/card/get");
+    }
+    public void LaunchThread(){
+
+        Thread timer = new Thread() {
+            @Override
+            public void run() {
+                //do something
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Toast.makeText(getActivity(),
+                                "Token Generated", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        };
+        timer.start();
+
     }
 }

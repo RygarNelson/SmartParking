@@ -188,29 +188,39 @@
 
 
            <Button
-               android:id="@+id/btnCancel"
+               android:id="@+id/btnSend"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_gravity="center"
-               android:text="Send"
+               android:text="Confirm"
+               android:background="#FF9100"
                android:layout_marginTop="60dp"
                android:layout_marginLeft="30dp"
                app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintStart_toStartOf="@id/btnSend"
+               app:layout_constraintStart_toStartOf="@id/btnCancel"
                app:layout_constraintTop_toBottomOf="@+id/Amount"
-               app:layout_constraintLeft_toLeftOf="@id/btnSend"/>
+               app:layout_constraintLeft_toLeftOf="@id/btnCancel"/>
             <Button
-                android:id="@+id/btnSend"
+                android:id="@+id/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="cancel"
+                android:background="@color/white"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="60dp"
-                app:layout_constraintEnd_toEndOf="@id/btnCancel"
+                app:layout_constraintEnd_toEndOf="@id/btnSend"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Amount"
-                app:layout_constraintRight_toRightOf="@id/btnCancel"/>
+                app:layout_constraintRight_toRightOf="@id/btnSend"/>
+                <View
+                    android:id="@+id/blanck_space"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnCancel" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
