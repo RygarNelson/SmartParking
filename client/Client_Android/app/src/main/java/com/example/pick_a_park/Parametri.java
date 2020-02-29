@@ -1,6 +1,9 @@
 package com.example.pick_a_park;
 
 import android.location.Location;
+
+import com.mapbox.geojson.Point;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.List;
 public class Parametri {
     // Dati server e connessione
     //93.46.53.229 - 192.168.43.221
-    public static String IP = "http://192.168.43.221:5700";
+    public static String IP = "http://93.46.53.229:5700";
     static String UUIDPARKING = "00001101-0000-1000-8000-00805f9b34fb";
     public static String Token = null;
     public static File login_file;
@@ -32,7 +35,11 @@ public class Parametri {
 
     // Dati carta di credito
    public static ArrayList<Card> cards = null;
-
+    //Lista parcheggi
+    public static ArrayList<Point> parks = null;
+    public static Point originPoint = null;
+    public static int selected_park;
+    public static Point destination = null;
     // Parcheggi e prenotazioni
     /*
 

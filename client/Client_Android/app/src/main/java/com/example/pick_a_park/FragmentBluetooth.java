@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ public class FragmentBluetooth extends Fragment implements ConnessioneListener {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GetCard();
-                //sendDataForGetCard();
+                //GetCard();
+                sendDataForGetCard();
             }
         });
         Button btn1 = view.findViewById(R.id.Gone);
@@ -53,14 +54,14 @@ public class FragmentBluetooth extends Fragment implements ConnessioneListener {
     public void GetCard(){
         //Chiede al server quali sono le mie carte:
         Parametri.cards = new ArrayList<Card>();
-        Parametri.cards.add(new Card(1,1,"20/11/2023", "Luca Marasca"));
-        Parametri.cards.add(new Card(2,2,"11/08/2026", "Luca Marasca"));
-        Parametri.cards.add(new Card(1,1,"20/11/2023", "Luca Marasca"));
-        Parametri.cards.add(new Card(2,2,"11/08/2026", "Luca Marasca"));
-        Parametri.cards.add(new Card(1,1,"20/11/2023", "Luca Marasca"));
-        Parametri.cards.add(new Card(2,2,"11/08/2026", "Luca Marasca"));
-        Parametri.cards.add(new Card(1,1,"20/11/2023", "Luca Marasca"));
-        Parametri.cards.add(new Card(2,2,"11/08/2026", "Luca Marasca"));
+        Parametri.cards.add(new Card("1",1,"20/11/2023", "Luca Marasca"));
+        Parametri.cards.add(new Card("2",2,"11/08/2026", "Luca Marasca"));
+        Parametri.cards.add(new Card("1",1,"20/11/2023", "Luca Marasca"));
+        Parametri.cards.add(new Card("2",2,"11/08/2026", "Luca Marasca"));
+        Parametri.cards.add(new Card("1",1,"20/11/2023", "Luca Marasca"));
+        Parametri.cards.add(new Card("2",2,"11/08/2026", "Luca Marasca"));
+        Parametri.cards.add(new Card("1",1,"20/11/2023", "Luca Marasca"));
+        Parametri.cards.add(new Card("2",2,"11/08/2026", "Luca Marasca"));
         //Avvia il fragment di pagamento:
         FragmentSelectCard fragment = new FragmentSelectCard();
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
@@ -103,7 +104,23 @@ public class FragmentBluetooth extends Fragment implements ConnessioneListener {
         }
         if (responseCode.equals("200")) {
             caricamento.dismiss();
-            Fragment_PR_password fragment = new Fragment_PR_password();
+            Parametri.cards = new ArrayList<Card>();
+            try {
+
+                JSONObject risposta = new JSONObject(result);
+                JSONArray js_cards = new JSONArray(risposta.getString("cards"));
+                for(int i=0; i<js_cards.length(); i++){
+                    JSONObject card = (JSONObject) js_cards.get(i);
+
+                    //APPENA AGGIUNTO, RICONTROLLARE
+                    Parametri.cards.add(new Card(card.getString("card"),1,"20/11/2023", "Luca Marasca"));
+                }
+
+
+            }catch (Exception e){
+
+            }
+            FragmentSelectCard fragment = new FragmentSelectCard();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
 
 

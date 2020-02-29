@@ -66,7 +66,7 @@ public class FragmentSelectCard extends Fragment {
 
             //Setto il codice della carta
             card_numbers[i] = children[i].findViewById(R.id.tv_card_number1);
-            card_numbers[i].setText(Integer.toString(Parametri.cards.get(i).code));
+            card_numbers[i].setText(Parametri.cards.get(i).code);
             //setto la data di scadenza
             validities[i] = children[i].findViewById(R.id.tv_validity1);
             validities[i].setText(Parametri.cards.get(i).expire);

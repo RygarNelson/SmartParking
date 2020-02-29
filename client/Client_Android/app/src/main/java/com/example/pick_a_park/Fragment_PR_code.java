@@ -47,9 +47,11 @@ public class Fragment_PR_code extends Fragment  implements ConnessioneListener{
         TextView code = getView().findViewById(R.id.code);
         String scode = code.getText().toString();
         //Da rimuovere
+        /*
         Fragment_PR_password fragment = new Fragment_PR_password();
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
-        //sendDataForRecovery(scode);
+        */
+        sendDataForRecovery(scode);
     }
     private void sendDataForRecovery(String code) {
         // Avverto l'utente del tentativo di invio dei dati di login al server
@@ -69,7 +71,7 @@ public class Fragment_PR_code extends Fragment  implements ConnessioneListener{
 
         Connessione conn = new Connessione(postData, "POST");
         conn.addListener(this);
-        conn.execute(Parametri.IP + "/api/data/recover_password/code");
+        conn.execute(Parametri.IP + "/api/auth/recover_password/code");
     }
 
     @Override

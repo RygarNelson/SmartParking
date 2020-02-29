@@ -2,13 +2,16 @@ package com.example.pick_a_park;
 
 public class Prenotazione {
     int id;
-    String NomeParcheggio;
+
     String Data;
-    Prenotazione(int id, String nome, String date)
+    Double cash;
+    int stato;
+    Prenotazione(int id, String date, Double cash, int state)
     {
         this.id = id;
-        this.NomeParcheggio = nome;
         this.Data = date;
+        this.cash = cash;
+        this.stato = state;
     }
 }
 

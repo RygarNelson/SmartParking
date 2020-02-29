@@ -48,9 +48,12 @@ public class Fragment_PR_mail extends Fragment implements ConnessioneListener {
         String email = mail.getText().toString();
         Parametri.email = email;
         //Da rimuovere
+        /*
         Fragment_PR_code fragment = new Fragment_PR_code();
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
-        //sendDataForRecovery(email);
+
+         */
+        sendDataForRecovery(email);
 
 
     }
@@ -72,7 +75,7 @@ public class Fragment_PR_mail extends Fragment implements ConnessioneListener {
 
         Connessione conn = new Connessione(postData, "POST");
         conn.addListener(this);
-        conn.execute(Parametri.IP + "/api/data/recover_password");
+        conn.execute(Parametri.IP + "/api/auth/recover_password");
     }
 
     @Override

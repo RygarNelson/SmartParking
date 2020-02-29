@@ -5,6 +5,8 @@
     android:name="com.google.android.gms.maps.MapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:divider="@android:color/transparent"
+    android:id="@+id/map_fragment_layout"
     tools:context=".FragmentMap">
 
     <com.mapbox.mapboxsdk.maps.MapView

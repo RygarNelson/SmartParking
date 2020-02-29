@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.mapbox.services.android.navigation.ui.v5.NavigationView;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.UnsupportedEncodingException;
@@ -145,6 +147,8 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
+
+
         }
     }
 
@@ -194,5 +198,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
            // startActivity(new Intent(LoginActivity.this, ImpostazioniAvanzate.class));
             opzioniAvanzate = 0;
         }
+
     }
+
 }

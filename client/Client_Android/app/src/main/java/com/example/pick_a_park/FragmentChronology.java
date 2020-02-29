@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -34,7 +35,7 @@ import static android.widget.ListPopupWindow.WRAP_CONTENT;
 public class FragmentChronology extends Fragment implements ConnessioneListener{
     private ProgressDialog caricamento = null;
     ArrayList<Prenotazione> prenotazioni;
-
+    View view;
     public FragmentChronology() {
         // Required empty public constructor
     }
@@ -43,11 +44,13 @@ public class FragmentChronology extends Fragment implements ConnessioneListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_fragment_chronology, container, false);
-       // sendDataGetPark();
-        GetPrenotazioni();
-        CreaUI(view);
+        view = inflater.inflate(R.layout.fragment_fragment_chronology, container, false);
 
+        sendDataGetPark();
+        /*
+        GetPrenotazioni();
+        CreaUI();
+        */
 
         // Inflate the layout for this fragment
         return view;
@@ -56,20 +59,19 @@ public class FragmentChronology extends Fragment implements ConnessioneListener{
     public void GetPrenotazioni(){
         prenotazioni = new ArrayList<Prenotazione>();
         //Simulo qualche prenotazione a mano
-        prenotazioni.add(new Prenotazione(1,"Parcheggio_Bello", "data1"));
-        prenotazioni.add(new Prenotazione(2,"Parcheggio_Bello2", "data2"));
-        prenotazioni.add(new Prenotazione(2,"Parcheggio_Bello2", "data2"));
-        prenotazioni.add(new Prenotazione(2,"Parcheggio_Bello2", "data2"));
-        prenotazioni.add(new Prenotazione(2,"Parcheggio_Bello2", "data2"));
-        prenotazioni.add(new Prenotazione(2,"Parcheggio_Bello2", "data2"));
-        prenotazioni.add(new Prenotazione(2,"Parcheggio_Bello2", "data2"));
-        prenotazioni.add(new Prenotazione(2,"Parcheggio_Bello2", "data2"));
+        prenotazioni.add(new Prenotazione(1, "data1", 2.0,1));
+        prenotazioni.add(new Prenotazione(1, "data1", 2.0,1));
+        prenotazioni.add(new Prenotazione(1, "data1", 2.0,1));
+        prenotazioni.add(new Prenotazione(1, "data1", 2.0,1));
+        prenotazioni.add(new Prenotazione(1, "data1", 2.0,1));
+        prenotazioni.add(new Prenotazione(1, "data1", 2.0,1));
+
 
         //Inserire QUI LA RICHIESTA DELLA LISTA DELLE PRENOTAZIONI AL SERVER
 
     }
     //Crea la grafica inserendo le varie prenotazioni
-    public void CreaUI(View view)
+    public void CreaUI()
     {
         View linearLayout = view.findViewById(R.id.linearLayoutVisualizza);
         TextView[] info_parcheggio = new TextView[prenotazioni.size()];
@@ -80,10 +82,12 @@ public class FragmentChronology extends Fragment implements ConnessioneListener{
 
         for (int i = 0; i < prenotazioni.size();i++)
         {
+
             //Immagine parcheggio
 
             info_parcheggio[i] = new TextView(view.getContext());
-            info_parcheggio[i].setText(prenotazioni.get(i).id+"\n"+prenotazioni.get(i).NomeParcheggio+"\n"+prenotazioni.get(i).Data+"\n");
+            info_parcheggio[i].setText(prenotazioni.get(i).id+"\n"+prenotazioni.get(i).Data+"\n"+prenotazioni.get(i).cash+"\n"
+            +state.values()[prenotazioni.get(i).stato]);
 
             info_parcheggio[i].setPaddingRelative(0, 8, 0, 8);
             // Setto l'id della text view come indice del vettore dei parcheggi vicini
@@ -150,8 +154,25 @@ public class FragmentChronology extends Fragment implements ConnessioneListener{
         }
         if (responseCode.equals("200")) {
             caricamento.dismiss();
-            Fragment_PR_password fragment = new Fragment_PR_password();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+            prenotazioni = new ArrayList<Prenotazione>();
+            try {
+
+                JSONObject risposta = new JSONObject(result);
+                JSONArray js_prenotazioni = new JSONArray(risposta.getString("history"));
+                for(int i=0; i<js_prenotazioni.length(); i++){
+                    JSONObject prenotazione = (JSONObject) js_prenotazioni.get(i);
+
+                    //APPENA AGGIUNTO, RICONTROLLARE
+                    prenotazioni.add(new Prenotazione(prenotazione.getInt("idParking"),prenotazione.getString("dateArrival"),
+                            prenotazione.getDouble("cashAmount"), prenotazione.getInt("code")));
+                }
+
+
+            }catch (Exception e){
+
+            }
+            CreaUI();
+
 
 
 
@@ -163,4 +184,9 @@ public class FragmentChronology extends Fragment implements ConnessioneListener{
 
     }
 
+}
+enum state{
+    IN_CORSO,
+    PARCHEGGIATO,
+    COMPLETATO
 }

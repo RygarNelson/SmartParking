@@ -53,8 +53,8 @@ public class Connessione extends AsyncTask<String, String, String> {
             int statusCode = urlConnection.getResponseCode();
             InputStreamReader inputStreamReader;
 
-            // Se lo statuscode è 200 leggo la risposta, altrimenti leggo l'errore
-            if (statusCode == 200)
+            // Se lo statuscode è 200 o 201 leggo la risposta, altrimenti leggo l'errore
+            if (statusCode == 200 || statusCode == 201)
                 inputStreamReader = new InputStreamReader (urlConnection.getInputStream());
             else    // Leggo dall' ErrorStream
                 inputStreamReader = new InputStreamReader (urlConnection.getErrorStream());

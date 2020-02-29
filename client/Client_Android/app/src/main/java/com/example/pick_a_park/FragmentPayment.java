@@ -42,7 +42,7 @@ public class FragmentPayment extends Fragment implements ConnessioneListener{
         final int card = getArguments().getInt("card_number");
         View view = inflater.inflate(R.layout.fragment_fragment_payment, container, false);
         TextView card_number = view.findViewById(R.id.tv_card_number);
-        card_number.setText((Integer.toString(Parametri.cards.get(card).code)));
+        card_number.setText(Parametri.cards.get(card).code);
         TextView validity = view.findViewById(R.id.tv_validity);
         validity.setText(Parametri.cards.get(card).expire);
         TextView name = view.findViewById(R.id.tv_member_name);

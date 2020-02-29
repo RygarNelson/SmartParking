@@ -16,6 +16,11 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import static com.example.pick_a_park.LoginActivity.SHA1;
 import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
 
@@ -67,6 +72,18 @@ public class Fragment_PR_password extends Fragment implements ConnessioneListene
                 Toast.makeText(getContext(), "The two password are not equal", Toast.LENGTH_LONG).show();
     }
     private void sendDataForRecovery(String password) {
+
+        try {
+            password = SHA1(password);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Riscontrati problemi nell' hashing della password.", Toast.LENGTH_LONG).show();
+            return;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Riscontrati problemi nell' hashing della password.", Toast.LENGTH_LONG).show();
+            return;
+        }
         // Avverto l'utente del tentativo di invio dei dati di login al server
         caricamento = ProgressDialog.show(getContext(), "Login",
                 "Connection...", true);
@@ -84,7 +101,7 @@ public class Fragment_PR_password extends Fragment implements ConnessioneListene
 
         Connessione conn = new Connessione(postData, "POST");
         conn.addListener(this);
-        conn.execute(Parametri.IP + "/api/data/recover_password/password");
+        conn.execute(Parametri.IP + "/api/auth/recover_password/password");
     }
 
     @Override
@@ -114,5 +131,29 @@ public class Fragment_PR_password extends Fragment implements ConnessioneListene
 
 
     }
+    // Criptazione SHA1
+    public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        byte[] sha1hash;
+        md.update(text.getBytes("iso-8859-1"), 0, text.length());
+        sha1hash = md.digest();
+        return convertToHex(sha1hash);
+    }
 
+    private static String convertToHex(byte[] data) {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < data.length; i++) {
+            int halfbyte = (data[i] >>> 4) & 0x0F;
+            int two_halfs = 0;
+            do {
+                if ((0 <= halfbyte) && (halfbyte <= 9)) {
+                    buf.append((char) ('0' + halfbyte));
+                } else {
+                    buf.append((char) ('a' + (halfbyte - 10)));
+                }
+                halfbyte = data[i] & 0x0F;
+            } while (two_halfs++ < 1);
+        }
+        return buf.toString();
+    }
 }
