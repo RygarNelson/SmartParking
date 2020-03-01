@@ -10,50 +10,40 @@ const { connection } = require('../db')
 
 router.post('/login', async (req, res) => {
     console.log(req.body)
-    connection.getConnection(function (err, connection) {
+    connection.query("select * from users where email = ? ;", [req.body.email], function (err, results, fields) {
         if (err) {
             res.status(400).send({
                 success: false,
                 error: err
             })
         } else {
-            connection.query("select * from users where email = ? ;", [req.body.email], function (err, results, fields) {
-                connection.release()
-                if (err) {
-                    res.status(400).send({
-                        success: false,
-                        error: err
+            if (results.length === 0) {
+                res.status(400).send({
+                    success: false,
+                    error: "Invalid email or password"
+                })
+            } else {
+                if (authMethods.comparePasswords(req.body.password, results[0].password)) {
+                    authMethods.deleteItemsOnJson(results[0], ["password"])
+                    res.status(200).send({
+                        autista:{
+                            token: authMethods.createJwtToken(authMethods.createJwtPayload(results[0].email, results[0].id)),
+                            id: results[0].id,
+                            email: results[0].email,
+                            nome: results[0].firstname,
+                            cognome: results[0].lastname,
+                            dataDiNascita: results[0].date,
+                            telefono: results[0].telephone,
+                            tipo: results[0].type
+                        }
                     })
                 } else {
-                    if (results.length === 0) {
-                        res.status(400).send({
-                            success: false,
-                            error: "Invalid email or password"
-                        })
-                    } else {
-                        if (authMethods.comparePasswords(req.body.password, results[0].password)) {
-                            authMethods.deleteItemsOnJson(results[0], ["password"])
-                            res.status(200).send({
-                                autista:{
-                                    token: authMethods.createJwtToken(authMethods.createJwtPayload(results[0].email, results[0].id)),
-                                    id: results[0].id,
-                                    email: results[0].email,
-                                    nome: results[0].firstname,
-                                    cognome: results[0].lastname,
-                                    dataDiNascita: results[0].date,
-                                    telefono: results[0].telephone,
-                                    tipo: results[0].type
-                                }
-                            })
-                        } else {
-                            res.status(400).send({
-                                success: false,
-                                error: "Invalid email or password"
-                            })
-                        }
-                    }
+                    res.status(400).send({
+                        success: false,
+                        error: "Invalid email or password"
+                    })
                 }
-            })
+            }
         }
     })
 })
@@ -75,12 +65,17 @@ router.post('/register', async (req, res) => {
                 error: "There is an error. Please try again!"
             })
         } else {
-            //200 - 
             res.status(200).send({
                 successful: {
-                    info: "Benvenuto" + JSONbody.firstname + " " + JSONbody.lastname + " !"
+                    info: "Benvenuto" + JSONbody.nome + " " + JSONbody.cognome + " !",
+                    token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, userId)),
+                    email: JSONbody.email,
+                    nome: JSONbody.nome,
+                    cognome: JSONbody.cognome,
+                    dataDiNascita: JSONbody.dataDiNascita,
+                    telefono: JSONbody.telefono,
+                    tipo: JSONbody.CF
                 }
-                //token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, userId))
             })
         }
     })
