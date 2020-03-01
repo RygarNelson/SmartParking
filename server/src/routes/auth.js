@@ -68,7 +68,7 @@ router.post('/register', async (req, res) => {
             res.status(200).send({
                 successful: {
                     info: "Benvenuto" + JSONbody.nome + " " + JSONbody.cognome + " !",
-                    token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, userId)),
+                    token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, 0)),
                     email: JSONbody.email,
                     nome: JSONbody.nome,
                     cognome: JSONbody.cognome,
