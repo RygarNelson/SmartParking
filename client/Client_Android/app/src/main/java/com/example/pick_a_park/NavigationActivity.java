@@ -62,6 +62,7 @@ public class NavigationActivity extends AppCompatActivity implements OnNavigatio
     private Handler handler;
     private NavigationView navigationView;
     private boolean dropoffDialogShown;
+    private boolean pause;
     private Location lastKnownLocation;
     //Lista dei parcheggi liberi
 
@@ -70,6 +71,7 @@ public class NavigationActivity extends AppCompatActivity implements OnNavigatio
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        pause = true;
         setTheme(R.style.Theme_AppCompat_NoActionBar);
         super.onCreate(savedInstanceState);
 
@@ -145,11 +147,13 @@ public class NavigationActivity extends AppCompatActivity implements OnNavigatio
 
     @Override
     public void onCancelNavigation() {
+        if(Parametri.nearest_park){
         // Navigation canceled, finish the activity
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future longRunningTaskFuture = executorService.submit(runnable);
         longRunningTaskFuture.cancel(true);
         handler.removeCallbacksAndMessages(null);
+        }
         finish();
     }
 
@@ -252,11 +256,13 @@ public class NavigationActivity extends AppCompatActivity implements OnNavigatio
 
         runnable = new Runnable(){
             public void run() {
-                ParkList();
-                //parks.add(Point.fromLngLat(12.901900,43.332550 ));
-                FindNearestPark();
-                Toast.makeText(getApplicationContext(),"Il timer è scaduto", Toast.LENGTH_LONG).show();
-                LaunchThread();
+
+                    pause = true;
+                    parks.clear();
+                    ParkList();
+
+
+
             }
         };
 
@@ -286,8 +292,17 @@ public class NavigationActivity extends AppCompatActivity implements OnNavigatio
     }
     //Trova il parcheggio più vicino alla destinazione e salva l'indice
     public void FindNearestPark(){
+        if (parks.size() == 0) {
+            return;
+        }
+
         Point selected = parks.get(selected_park-1);
         Ordina(destination);
+        if (parks.size() == 1)
+        {
+            Prenota();
+            fetchRoute(getLastKnownLocation(), parks.get(0));
+        }
         if(parks.get(0) != selected) {
             Prenota();
             fetchRoute(getLastKnownLocation(), parks.get(0));
@@ -296,10 +311,6 @@ public class NavigationActivity extends AppCompatActivity implements OnNavigatio
 
 
     }
-
-
-
-
 
     //Richiede al server la lista dei parcheggi
     public void ParkList(){
@@ -324,39 +335,50 @@ public class NavigationActivity extends AppCompatActivity implements OnNavigatio
 
         Connessione conn = new Connessione(postData, "POST");
         conn.addListener(this);
-        conn.execute(Parametri.IP + "/api/data/parking/book");
+        conn.execute(Parametri.IP + "/api/data/parking/book/change");
     }
     //Metodo utilizzato per leggere la risposta dal server
     @Override
     public void ResultResponse(String responseCode, String result) {
         if (responseCode == null) {
-            Toast.makeText(getApplicationContext(), "ERRORE:\nNo connection or server offline.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "ERROR:\nNo connection or server offline.", Toast.LENGTH_LONG).show();
             return;
         }
         if(responseCode.equals("200"))
         {
+
             try {
 
                 JSONObject risposta = new JSONObject(result);
                 JSONArray parcheggi = new JSONArray(risposta.getString("parcheggi"));
                 for(int i=0; i<parcheggi.length(); i++){
                     JSONObject parcheggio = (JSONObject) parcheggi.get(i);
-                    parks.clear();
+                    Point park = Point.fromLngLat(Double.parseDouble(parcheggio.getString("long")), Double.parseDouble(parcheggio.getString("lat")));
+                    //Distance beetween my destination and the selected park
+                    double distance = TurfMeasurement.distance(
+                            destination, park);
 
                     if(parcheggio.getInt("code")==0) {
-
-                        parks.add(Point.fromLngLat(Double.parseDouble(parcheggio.getString("long")), Double.parseDouble(parcheggio.getString("lat"))));
+                        if (distance < Parametri.distance)
+                            parks.add(Point.fromLngLat(Double.parseDouble(parcheggio.getString("long")), Double.parseDouble(parcheggio.getString("lat"))));
 
                     }
+
                 }
-                if(responseCode.equals("201"))
-                {
-                    Toast.makeText(getApplicationContext(), "Penotation Done", Toast.LENGTH_LONG).show();
-                    return;
-                }
+
+                FindNearestPark();
+                Toast.makeText(getApplicationContext(), "Il timer è scaduto", Toast.LENGTH_LONG).show();
+                if(Parametri.nearest_park)
+                    LaunchThread();
+
 
             }catch (Exception e){
 
+            }
+            if(responseCode.equals("201"))
+            {
+                Toast.makeText(getApplicationContext(), "Penotation Done", Toast.LENGTH_LONG).show();
+                return;
             }
 
         }

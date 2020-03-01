@@ -86,8 +86,22 @@ public class FragmentChronology extends Fragment implements ConnessioneListener{
             //Immagine parcheggio
 
             info_parcheggio[i] = new TextView(view.getContext());
-            info_parcheggio[i].setText(prenotazioni.get(i).id+"\n"+prenotazioni.get(i).Data+"\n"+prenotazioni.get(i).cash+"\n"
-            +state.values()[prenotazioni.get(i).stato]);
+            if(prenotazioni.get(i).Data.isEmpty())
+            {
+                info_parcheggio[i].setText("ID: "+prenotazioni.get(i).id+"\n"+"Data Arrivo: N/A"+"\nPrezzo:"+prenotazioni.get(i).cash+"\nStato: "
+                        +state.values()[prenotazioni.get(i).stato]);
+            }
+            if(prenotazioni.get(i).cash == 0.0)
+            {
+                info_parcheggio[i].setText("ID: "+prenotazioni.get(i).id+"\nData Arrivo:"+prenotazioni.get(i).Data+"\n"+"Prezzo: N/A"+"\nStato: "
+                        +state.values()[prenotazioni.get(i).stato]);
+            }
+            if (prenotazioni.get(i).cash == 0.0 && prenotazioni.get(i).Data.isEmpty())
+                info_parcheggio[i].setText("ID: "+prenotazioni.get(i).id+"\n"+"Data Arrivo: N/A"+"\n"+"Prezzo: N/A"+"\nStato: "
+                        +state.values()[prenotazioni.get(i).stato]);
+            if (prenotazioni.get(i).cash != 0.0 && !prenotazioni.get(i).Data.isEmpty())
+                info_parcheggio[i].setText("ID: "+prenotazioni.get(i).id+"\nData Arrivo: "+prenotazioni.get(i).Data+"\nPrezzo: "+prenotazioni.get(i).cash+"\nStato: "
+                +state.values()[prenotazioni.get(i).stato]);
 
             info_parcheggio[i].setPaddingRelative(0, 8, 0, 8);
             // Setto l'id della text view come indice del vettore dei parcheggi vicini
@@ -162,7 +176,6 @@ public class FragmentChronology extends Fragment implements ConnessioneListener{
                 for(int i=0; i<js_prenotazioni.length(); i++){
                     JSONObject prenotazione = (JSONObject) js_prenotazioni.get(i);
 
-                    //APPENA AGGIUNTO, RICONTROLLARE
                     prenotazioni.add(new Prenotazione(prenotazione.getInt("idParking"),prenotazione.getString("dateArrival"),
                             prenotazione.getDouble("cashAmount"), prenotazione.getInt("code")));
                 }

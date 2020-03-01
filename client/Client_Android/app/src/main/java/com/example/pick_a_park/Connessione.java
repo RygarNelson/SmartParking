@@ -108,8 +108,8 @@ public class Connessione extends AsyncTask<String, String, String> {
 
         try {
             JSONObject response = new JSONObject(data);
-            JSONObject error = new JSONObject(response.getString("error"));
-            result = error.getString("info");
+            result = response.getString("error");
+
         } catch (Exception e) {
             result = "Impossibile leggere la risposta del server.";
         }

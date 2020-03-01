@@ -122,6 +122,31 @@
                 android:background="@android:color/darker_gray"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Name_data" />
+
+
+            <EditText
+                android:id="@+id/CVV"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:textSize="18dp"
+                android:hint="CVV"
+                android:textColorHint="#C3C3C3"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horizzontal_separator3"/>
+
+
+            <View
+                android:id="@+id/horizzontal_separator4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="8dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/CVV" />
             <View
                 android:id="@+id/blanck_space"
                 android:layout_width="match_parent"
@@ -129,9 +154,7 @@
                 android:layout_marginLeft="8dp"
                 android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/horizzontal_separator3" />
-
-
+                app:layout_constraintTop_toBottomOf="@+id/horizzontal_separator4" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
     <TextView
@@ -140,7 +163,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="\nBy tapping the button, you agree to our Term \u0026 Condition and Privacy Policy"
-        android:layout_marginBottom="310dp"
+        android:layout_marginBottom="270dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:textSize="13dp"
@@ -148,6 +171,7 @@
         android:layout_gravity="bottom"
          />
     <Button
+        android:id="@+id/confirm"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="bottom"
@@ -156,6 +180,6 @@
         android:background="#FF9100"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="230dp"/>
+        android:layout_marginBottom="190dp"/>
 
 </FrameLayout>

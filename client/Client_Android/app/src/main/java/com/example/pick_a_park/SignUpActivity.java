@@ -19,8 +19,10 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -231,10 +233,48 @@ public class SignUpActivity extends AppCompatActivity implements ConnessioneList
         }
 
         if (responseCode.equals("200")) {
-            String message = Connessione.estraiSuccessful(result);
+            String message;
+
+            // Estraggo i miei dati restituiti dal server
+            try {
+                JSONObject token = new JSONObject(result);
+                JSONObject autistajs = new JSONObject(token.getString("autista"));
+
+                Parametri.Token = autistajs.getString("token");
+                Parametri.nome = autistajs.getString("nome");
+                Parametri.cognome = autistajs.getString("cognome");
+                Parametri.data_nascita = autistajs.getString("dataDiNascita");
+                Parametri.email = autistajs.getString("email");
+                Parametri.telefono = autistajs.getString("telefono");
+
+                message = "Welcome " + Parametri.nome + ".";
+                /*
+                // Tento l'estrazione dei dati della carta di credito
+                if (autistajs.has("carta_di_credito")) {
+                    carta = new JSONObject(autistajs.getString("carta_di_credito"));
+
+                    if (carta.has("numero_carta"))
+                        Parametri.numero_carta = carta.getString("numero_carta");
+                    if (carta.has("dataDiScadenza"))
+                        Parametri.data_di_scadenza = carta.getString("dataDiScadenza");
+                    if (carta.has("pin"))
+                        Parametri.pin = carta.getString("pin");
+                }
+                */
+            } catch (Exception e) {
+                message = "Response Error.";
+
+                caricamento.dismiss();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                return;
+            }
+            // Salvo i dati di login corretti
+            saveData(Parametri.username, Parametri.password);
+
             caricamento.dismiss();
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
     }
@@ -264,5 +304,17 @@ public class SignUpActivity extends AppCompatActivity implements ConnessioneList
             } while(two_halfs++ < 1);
         }
         return buf.toString();
+    }
+    private void saveData(String username, String password) {
+        try {
+            BufferedWriter fos = new BufferedWriter(new FileWriter(Parametri.login_file.getAbsolutePath()));
+            fos.write(username + "\n");
+            fos.write(password + "\n");
+            fos.write(Parametri.TEMPO_EXTRA + "\n");
+            fos.write(Parametri.TEMPO_AVVISO + "\n");
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

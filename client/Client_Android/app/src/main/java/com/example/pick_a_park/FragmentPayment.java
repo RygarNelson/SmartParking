@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentPayment extends Fragment implements ConnessioneListener{
-
+    EditText cvv;
     private ProgressDialog caricamento = null;
     public FragmentPayment() {
         // Required empty public constructor
@@ -52,6 +53,8 @@ public class FragmentPayment extends Fragment implements ConnessioneListener{
 
         TextView amount = view.findViewById(R.id.Amount);
         amount.setText("Amount: "+ Double.toString(randomNumber)+" €");
+        cvv = view.findViewById(R.id.CCV_data);
+
         Button cancel = view.findViewById(R.id.btnCancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,13 +67,14 @@ public class FragmentPayment extends Fragment implements ConnessioneListener{
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SendPayment(card,randomNumber);
+                String cvv_data = cvv.getText().toString();
+                SendPayment(card,randomNumber,cvv_data);
             }
         });
         // Inflate the layout for this fragment
         return view;
     }
-    public void SendPayment(int card, double payment)
+    public void SendPayment(int card, double payment, String cvv_data)
     {
         // Avverto l'utente del tentativo di invio dei dati di login al server
         caricamento = ProgressDialog.show(getContext(), "Login",
@@ -80,8 +84,10 @@ public class FragmentPayment extends Fragment implements ConnessioneListener{
         JSONObject postData = new JSONObject();
         try {
             postData.put("email", Parametri.email);
-            postData.put("code", Parametri.cards.get(card).code);
+            postData.put("card", Parametri.cards.get(card).code);
             postData.put("cash", payment);
+            postData.put("cvv",cvv_data);
+
 
         } catch (Exception e) {
             caricamento.dismiss();
@@ -90,7 +96,7 @@ public class FragmentPayment extends Fragment implements ConnessioneListener{
 
         Connessione conn = new Connessione(postData, "POST");
         conn.addListener(this);
-        conn.execute(Parametri.IP + "/api/data/recover_password/code");
+        conn.execute(Parametri.IP + "/api/data/parking/payment");
     }
     @Override
     public void ResultResponse(String responseCode, String result) {
@@ -109,7 +115,7 @@ public class FragmentPayment extends Fragment implements ConnessioneListener{
         if (responseCode.equals("200")) {
             caricamento.dismiss();
             Toast.makeText(getContext(), "Pagamento Effettuato", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
 
 

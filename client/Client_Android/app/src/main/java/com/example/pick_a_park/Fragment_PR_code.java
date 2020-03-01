@@ -2,6 +2,7 @@ package com.example.pick_a_park;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,14 +20,19 @@ import org.json.JSONObject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Fragment_PR_code extends Fragment  implements ConnessioneListener{
+public class Fragment_PR_code extends FragmentWithOnBack  implements ConnessioneListener{
 
     private ProgressDialog caricamento = null;
     public Fragment_PR_code() {
         // Required empty public constructor
     }
 
-
+    @Override
+    public boolean onBackPressed() {
+        startActivity(new Intent(getContext(), LoginActivity.class));
+        getActivity().finish();
+        return true;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

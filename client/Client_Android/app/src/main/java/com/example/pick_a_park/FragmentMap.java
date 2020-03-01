@@ -92,7 +92,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 
 //++++++++++++++++++++++++++++++++++++VARIABILI++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-public class FragmentMap extends Fragment implements ConnessioneListener {
+public class FragmentMap extends FragmentWithOnBack implements ConnessioneListener {
     //Progress Dialog del caricamento
     private ProgressDialog caricamento = null;
 
@@ -174,7 +174,7 @@ public class FragmentMap extends Fragment implements ConnessioneListener {
 
                             }
         );
-
+        /*
         //Dato che sto lavorando offline aggiungo il parcheggio a mano
         double parkinglong = 14.0658985;
         double parkinglat = 42.139928;
@@ -184,6 +184,7 @@ public class FragmentMap extends Fragment implements ConnessioneListener {
         parkinglat = 43.139928;
         parks.add(Point.fromLngLat(parkinglong, parkinglat));
 
+         */
 
 
         ParkList();
@@ -321,7 +322,10 @@ public class FragmentMap extends Fragment implements ConnessioneListener {
     }
     //Trova il parcheggio più vicino alla destinazione e salva l'indice
     public void GetSelectedPark(double lat, double longit){
-
+        if(parks.isEmpty()){
+            Toast.makeText(getContext(),"No parks avaiable", Toast.LENGTH_LONG).show();
+            return;
+        }
         destination = Point.fromLngLat(longit, lat);
         if (selected_park == parks.size() || selected_park == 6)
             selected_park = 0;
@@ -336,6 +340,7 @@ public class FragmentMap extends Fragment implements ConnessioneListener {
         //Distance beetween my destination and the selected park
         double distanceBetweenLastAndSecondToLastClickPoint = TurfMeasurement.distance(
                 destination, parks.get(selected_park));
+        Parametri.distance = distanceBetweenLastAndSecondToLastClickPoint;
         String distance = Double.toString(distanceBetweenLastAndSecondToLastClickPoint);
 
         //Track the route beetween my location and the selected park
@@ -578,6 +583,12 @@ public class FragmentMap extends Fragment implements ConnessioneListener {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String directionsRouteJson = preferences.getString(NavigationConstants.NAVIGATION_VIEW_ROUTE_KEY, "");
         return DirectionsRoute.fromJson(directionsRouteJson);
+    }
+    @Override
+    public boolean onBackPressed() {
+        startActivity(new Intent(getContext(), MainActivity.class));
+        getActivity().finish();
+        return true;
     }
 }
 

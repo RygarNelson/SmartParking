@@ -40,6 +40,7 @@ public class Parametri {
     public static Point originPoint = null;
     public static int selected_park;
     public static Point destination = null;
+    public static double distance;
     // Parcheggi e prenotazioni
     /*
 

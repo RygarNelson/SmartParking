@@ -27,7 +27,7 @@ import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Fragment_PR_password extends Fragment implements ConnessioneListener {
+public class Fragment_PR_password extends FragmentWithOnBack implements ConnessioneListener {
 
     private ProgressDialog caricamento = null;
     public Fragment_PR_password() {
@@ -155,5 +155,11 @@ public class Fragment_PR_password extends Fragment implements ConnessioneListene
             } while (two_halfs++ < 1);
         }
         return buf.toString();
+    }
+    @Override
+    public boolean onBackPressed() {
+        startActivity(new Intent(getContext(), LoginActivity.class));
+        getActivity().finish();
+        return true;
     }
 }

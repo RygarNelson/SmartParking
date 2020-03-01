@@ -45,7 +45,7 @@ public class FragmentBluetooth extends Fragment implements ConnessioneListener {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Gone();
+                Gone();
             }
         });
         // Inflate the layout for this fragment
@@ -113,7 +113,7 @@ public class FragmentBluetooth extends Fragment implements ConnessioneListener {
                     JSONObject card = (JSONObject) js_cards.get(i);
 
                     //APPENA AGGIUNTO, RICONTROLLARE
-                    Parametri.cards.add(new Card(card.getString("card"),1,"20/11/2023", "Luca Marasca"));
+                    Parametri.cards.add(new Card(card.getString("card"),1,card.getString("expires"), card.getString("holder")));
                 }
 
 
@@ -127,6 +127,12 @@ public class FragmentBluetooth extends Fragment implements ConnessioneListener {
 
 
 
+        }
+        if(responseCode.equals("201"))
+        {
+            caricamento.dismiss();
+            Toast.makeText(getContext(), "Good bye", Toast.LENGTH_LONG).show();
+            return;
         }
     }
     public void Gone()

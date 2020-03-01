@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.File;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,22 +38,18 @@ public class MainActivity extends AppCompatActivity {
         View header1 = nav.getHeaderView(0);
         TextView mail = header1.findViewById(R.id.email);
         mail.setText(Parametri.email);
-        if (Parametri.profile_image != null) {
-            byte[] decodedString = Base64.decode(Parametri.profile_image, Base64.DEFAULT);
-            Bitmap foto = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            View header = nav.getHeaderView(0);
-            ImageView profile;
+        File imgFile = new File("/data/user/0/com.example.pick_a_park/app_imageDir/profile.jpg");
+        try {
+            if (imgFile.exists()) {
 
-            ///data/user/0/com.example.pick_a_park/app_imageDir
-            Bitmap myBitmap = BitmapFactory.decodeFile(Parametri.path+"/profile.jpg");
-            if (myBitmap == null) {
-                profile = (ImageView) header.findViewById(R.id.img);
-                profile.setImageBitmap(foto);
-            }else{
-                    profile = (ImageView) header.findViewById(R.id.img);
-                    profile.setImageBitmap(myBitmap);
+                Bitmap myBitmap = BitmapFactory.decodeFile(Parametri.path + "/profile.jpg");
+                View header = nav.getHeaderView(0);
+                ImageView myImage = (ImageView) header.findViewById(R.id.img);
+
+                myImage.setImageBitmap(myBitmap);
+
             }
-        }
+        }catch (Exception e){}
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
