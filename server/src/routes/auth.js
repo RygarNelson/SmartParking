@@ -62,37 +62,26 @@ router.post('/register', async (req, res) => {
     //Stampo i dati ricevuti
     let JSONbody = req.body.autista
     console.log(JSONbody)
-    //Mi connetto al database
-    connection.getConnection(function (err, connection) {
+    //Preparo la query
+    let userPass = authMethods.encryptPassword(JSONbody.password)
+            
+    let insertionArray = [JSONbody.email, userPass, JSONbody.nome, JSONbody.cognome, JSONbody.dataDiNascita, JSONbody.telefono, JSONbody.CF]
+    //Inserisco Utente nel Database
+    connection.query("insert into users (id, email, password, firstname, lastname, date, telephone, fc, type) values (NULL,?,?,?,?,?,?,?,0);", insertionArray, function (err, results, fields){
         if (err) {
-            res.send({
+            console.log(err)
+            res.status(400).send({
                 success: false,
-                error: err
+                error: "There is an error. Please try again!"
             })
         } else {
-            //Preparo la query
-            let userPass = authMethods.encryptPassword(JSONbody.password)
-            
-            let insertionArray = [JSONbody.email, userPass, JSONbody.nome, JSONbody.cognome, JSONbody.dataDiNascita, JSONbody.telefono, JSONbody.CF]
-            //Inserisco Utente nel Database
-            connection.query("insert into users (id, email, password, firstname, lastname, date, telephone, fc, card, type) values (NULL,?,?,?,?,?,?,?,NULL,0);", insertionArray, function (err, results, fields){
-                connection.release()
-                if (err) {
-                    res.status(400).send({
-                        success: false,
-                        error: "There is an error. Please try again!"
-                    })
-                } else {
-                    //200 - 
-                    res.status(200).send({
-                        successful: {
-                            info: "Benvenuto" + JSONbody.firstname + " " + JSONbody.lastname + " !"
-                        }
-                        //token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, userId))
-                    })
+            //200 - 
+            res.status(200).send({
+                successful: {
+                    info: "Benvenuto" + JSONbody.firstname + " " + JSONbody.lastname + " !"
                 }
+                //token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, userId))
             })
-
         }
     })
 })
@@ -125,7 +114,7 @@ router.post('/recover_password', async (req, res) => {
                         })
                     } else {
                         try{
-                            dataMethods.recoverPassword(req.body.email, 
+                            authMethods.recoverPassword(req.body.email, 
                                 "Our systems have received a password recovery."+
                                 "\n Please insert the following code into the application"+
                                 "\n <h1> " + code + "</h1>")

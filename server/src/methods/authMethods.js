@@ -1,8 +1,15 @@
 var bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 
+const { mailOptions } = require('../config/mailOptions')
 const { secret, jwtOptions } = require('../config/jwtOptions')
 const { encryptionOptions } = require('../config/encryptionOptions')
+
+const transporter = nodemailer.createTransport({
+    service: mailOptions.service,
+    auth: mailOptions.auth
+})
 
 module.exports = {
 
@@ -10,6 +17,16 @@ module.exports = {
         for (let i = 0; i < items.length; i++) {
             delete array[items[i]]
         }
+    },
+
+    recoverPassword: function (receiver, text) {
+        let message = {
+            from: mailOptions.auth.user,
+            to: receiver,
+            subject: 'Password recovery',
+            text: text
+        };
+        return transporter.sendMail(message)
     },
 
     createJwtPayload: function(email, id) {
