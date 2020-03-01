@@ -331,32 +331,40 @@ router.post('/parking/departure', async (req,res) => {
                 error: err
             })
         } else {
-            let idParking = results[0].idParking
+            if (results.length === 0) {
+                console.log("The user hasn't payed yet")
+                res.status(400).send({
+                    success: false,
+                    error: "The user hasn't payed yet"
+                })
+            } else {
+                let idParking = results[0].idParking
 
-            //Imposto la storia dell'utente
-            connection.query('UPDATE history SET dateDeparture = ?, code = 2 WHERE userEmail = ? && code = 1', [new Date(), req.body.email], function (err, results, fields){
-                if (err) {
-                    console.log(err)
-                    res.status(400).send({
-                        success: false,
-                        error: err
-                    })
-                } else {
-                    
-                    //Libero il parcheggio
-                    connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [idParking], function (err, results, fields){
-                        if (err) {
-                            console.log(err)
-                            res.status(400).send({
-                                success: false,
-                                error: err
-                            })
-                        } else {
-                            res.status(201).send()
-                        }
-                    })
-                }
-            })
+                //Imposto la storia dell'utente
+                connection.query('UPDATE history SET dateDeparture = ?, code = 2 WHERE userEmail = ? && code = 1', [new Date(), req.body.email], function (err, results, fields){
+                    if (err) {
+                        console.log(err)
+                        res.status(400).send({
+                            success: false,
+                            error: err
+                        })
+                    } else {
+                        
+                        //Libero il parcheggio
+                        connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [idParking], function (err, results, fields){
+                            if (err) {
+                                console.log(err)
+                                res.status(400).send({
+                                    success: false,
+                                    error: err
+                                })
+                            } else {
+                                res.status(201).send()
+                            }
+                        })
+                    }
+                })
+            }
         }
      })
 })
