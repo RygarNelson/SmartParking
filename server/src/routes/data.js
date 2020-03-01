@@ -180,8 +180,8 @@ router.post('/parking/book/change', async (req,res) => {
         } else {
             let oldParking = results[0].idParking
 
-            //Aggiorno la storia
-            connection.query('UPDATE history SET idParking = ? WHERE userEmail = ? && code = 0', [req.body.idParking,req.body.email], function (err, results, fields){
+            //Prendo l'id del nuovo parcheggio
+            connection.query("SELECT * FROM parkings WHERE lat = ? || 'long' = ?", [req.body.lat, req.body.long], function (err, results, fields){
                 if (err) {
                     console.log(err)
                     res.status(400).send({
@@ -189,9 +189,10 @@ router.post('/parking/book/change', async (req,res) => {
                         error: err
                     })
                 } else {
+                    let newParking = results[0].id
 
-                    //Libero il vecchio parcheggio
-                    connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [oldParking], function (err, results, fields){
+                    //Aggiorno la storia
+                    connection.query('UPDATE history SET idParking = ? WHERE userEmail = ? && code = 0', [newParking,req.body.email], function (err, results, fields){
                         if (err) {
                             console.log(err)
                             res.status(400).send({
@@ -200,8 +201,8 @@ router.post('/parking/book/change', async (req,res) => {
                             })
                         } else {
 
-                            //Occupo il nuovo parcheggio
-                            connection.query('UPDATE parkings SET code = 1 WHERE id = ?', [req.body.idParking], function (err, results, fields){
+                            //Libero il vecchio parcheggio
+                            connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [oldParking], function (err, results, fields){
                                 if (err) {
                                     console.log(err)
                                     res.status(400).send({
@@ -209,7 +210,19 @@ router.post('/parking/book/change', async (req,res) => {
                                         error: err
                                     })
                                 } else {
-                                    res.status(200).send()
+
+                                    //Occupo il nuovo parcheggio
+                                    connection.query('UPDATE parkings SET code = 1 WHERE id = ?', [newParking], function (err, results, fields){
+                                        if (err) {
+                                            console.log(err)
+                                            res.status(400).send({
+                                                success: false,
+                                                error: err
+                                            })
+                                        } else {
+                                            res.status(200).send()
+                                        }
+                                    })
                                 }
                             })
                         }
