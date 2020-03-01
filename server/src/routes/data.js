@@ -12,13 +12,13 @@ const { connection } = require('../db')
 /** Parkings */
 router.get('/parkings', async (req, res) => {
     connection.query("select * from parkings", function (err, results, fields) {
-        connection.release()
         if (err) {
             res.status(400).send({
                 success: false,
                 error: err
             })
         } else {
+            dataMethods.printParkings(results)
             res.status(200).send({
                 parcheggi: results
             })
@@ -90,7 +90,7 @@ router.post('/card/new', async (req,res) => {
     if(dataMethods.checkCardNumber(req.body.card)){
 
         //Inserisco la carta nel database
-        connection.query('INSERT INTO cards (id, userEmail, card, amount) VALUES (NULL,?,?,?)', [req.body.email,req.body.card,req.body.amount], function (err, results, fields){
+        connection.query('INSERT INTO cards (id, userEmail, card, amount, cvv, holder, expires) VALUES (NULL,?,?,?,?,?,?)', [req.body.email,req.body.card,req.body.amount,req.body.cvv,req.body.holder,req.body.expires], function (err, results, fields){
             if (err) {
                 console.log(err)
                 res.status(400).send({
@@ -112,6 +112,7 @@ router.post('/card/new', async (req,res) => {
 /** Book a parking */
 router.post ('/parking/book', async (req,res) => {
     //Ritrovo il parcheggio dalle coordinate
+    console.log(req.body)
     connection.query("SELECT * FROM parkings WHERE lat = ? || 'long' = ?", [req.body.lat, req.body.long], function (err, results, fields){
         if (err) {
             console.log(err)
@@ -121,12 +122,14 @@ router.post ('/parking/book', async (req,res) => {
             })
         } else {
             if (results.length === 0) {
+                console.log("Parking not existing")
                 res.status(400).send({
                     success: false,
                     error: "Parking not existing"
                 })
             } else {
                 if(results[0].code != 0){
+                    console.log("Parking not free")
                     res.status(400).send({
                         success: false,
                         error: "Parking not free"
@@ -154,7 +157,7 @@ router.post ('/parking/book', async (req,res) => {
                                         error: err
                                     })
                                 } else {
-                                    res.status(200).send()
+                                    res.status(201).send()
                                 }
                             })
                         }
@@ -165,10 +168,10 @@ router.post ('/parking/book', async (req,res) => {
     })
 })
 
-/** Parking: Payment */
-router.post('/parking/payment', async (req,res) => {
-    //Controllo se la carta esiste
-    connection.query('SELECT * FROM cards WHERE userEmail = ? && card = ?', [req.body.email, req.body.card], function (err, results, fields){
+/** Change a booked parking */
+router.post('/parking/book/change', async (req,res) => {
+    //Prendo il vecchio parcheggio
+    connection.query('SELECT * FROM history WHERE userEmail = ? && code = 0', [req.body.email], function (err, results, fields){
         if (err) {
             console.log(err)
             res.status(400).send({
@@ -176,23 +179,25 @@ router.post('/parking/payment', async (req,res) => {
                 error: err
             })
         } else {
-            if (results.length === 0) {
-                res.status(400).send({
-                    success: false,
-                    error: "Card not existing"
-                })
-            } else {
+            let oldParking = results[0].idParking
+            console.log("OldParking")
+            console.log(oldParking)
 
-                //Controllo se ha abbastanza soldi
-                if(results[0].amount < req.body.cash){
+            //Prendo l'id del nuovo parcheggio
+            connection.query("SELECT * FROM parkings WHERE lat = ? || 'long' = ?", [req.body.lat, req.body.long], function (err, results, fields){
+                if (err) {
+                    console.log(err)
                     res.status(400).send({
                         success: false,
-                        error: "Not enough money"
+                        error: err
                     })
                 } else {
+                    let newParking = results[0].id
+                    console.log("NewParking")
+                    console.log(newParking)
 
-                    //Aggiorno la quantità di soldi all'interno della carta
-                    connection.query('UPDATE cards SET amount = ? WHERE userEmail = ? && card = ?', [results[0].amount - req.body.cash, req.body.email, req.body.card], function (err, results, fields){
+                    //Aggiorno la storia
+                    connection.query('UPDATE history SET idParking = ? WHERE userEmail = ? && code = 0', [newParking,req.body.email], function (err, results, fields){
                         if (err) {
                             console.log(err)
                             res.status(400).send({
@@ -201,8 +206,8 @@ router.post('/parking/payment', async (req,res) => {
                             })
                         } else {
 
-                            //Prendo il parcheggio dalla prenotazione
-                            connection.query('SELECT * FROM history WHERE userEmail = ? && code = 0', [req.body.email], function (err, results, fields){
+                            //Libero il vecchio parcheggio
+                            connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [oldParking], function (err, results, fields){
                                 if (err) {
                                     console.log(err)
                                     res.status(400).send({
@@ -210,10 +215,9 @@ router.post('/parking/payment', async (req,res) => {
                                         error: err
                                     })
                                 } else {
-                                    let idParking = results[results.length-1].idParking
 
-                                    //Aggiorno lo stato del parcheggio
-                                    connection.query('UPDATE history SET dateArrival = ?, cashAmount = ?, code = 1 WHERE userEmail = ? && idParking = ?', [new Date(), req.body.cash, req.body.email, idParking], function (err, results, fields){
+                                    //Occupo il nuovo parcheggio
+                                    connection.query('UPDATE parkings SET code = 1 WHERE id = ?', [newParking], function (err, results, fields){
                                         if (err) {
                                             console.log(err)
                                             res.status(400).send({
@@ -228,6 +232,88 @@ router.post('/parking/payment', async (req,res) => {
                             })
                         }
                     })
+                }
+            })
+        }
+    })
+})
+
+/** Parking: Payment */
+router.post('/parking/payment', async (req,res) => {
+    //Controllo se la carta esiste
+    console.log(req.body)
+    connection.query('SELECT * FROM cards WHERE userEmail = ? && card = ?', [req.body.email, req.body.card], function (err, results, fields){
+        if (err) {
+            console.log(err)
+            res.status(400).send({
+                success: false,
+                error: err
+            })
+        } else {
+            if (results.length === 0) {
+                console.log("Card not existing")
+                res.status(400).send({
+                    success: false,
+                    error: "Card not existing"
+                })
+            } else {
+
+                //Controllo se ha abbastanza soldi
+                if(results[0].amount < req.body.cash){
+                    console.log("Not enough cash")
+                    res.status(400).send({
+                        success: false,
+                        error: "Not enough money"
+                    })
+                } else {
+
+                    //Controllo il cvv
+                    if(results[0].cvv != req.body.cvv){
+                        console.log("CVV not correct")
+                        res.status(400).send({
+                            success: false,
+                            error: "Cvv not correct"
+                        })
+                    } else {
+
+                        //Aggiorno la quantità di soldi all'interno della carta
+                        connection.query('UPDATE cards SET amount = ? WHERE userEmail = ? && card = ?', [results[0].amount - req.body.cash, req.body.email, req.body.card], function (err, results, fields){
+                            if (err) {
+                                console.log(err)
+                                res.status(400).send({
+                                    success: false,
+                                    error: err
+                                })
+                            } else {
+
+                                //Prendo il parcheggio dalla prenotazione
+                                connection.query('SELECT * FROM history WHERE userEmail = ? && code = 0', [req.body.email], function (err, results, fields){
+                                    if (err) {
+                                        console.log(err)
+                                        res.status(400).send({
+                                            success: false,
+                                            error: err
+                                        })
+                                    } else {
+                                        let idParking = results[results.length-1].idParking
+
+                                        //Aggiorno lo stato del parcheggio
+                                        connection.query('UPDATE history SET dateArrival = ?, cashAmount = ?, code = 1 WHERE userEmail = ? && idParking = ? && code = 0', [new Date(), req.body.cash, req.body.email, idParking], function (err, results, fields){
+                                            if (err) {
+                                                console.log(err)
+                                                res.status(400).send({
+                                                    success: false,
+                                                    error: err
+                                                })
+                                            } else {
+                                                res.status(200).send()
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
                 }
             }
         }
@@ -245,32 +331,40 @@ router.post('/parking/departure', async (req,res) => {
                 error: err
             })
         } else {
-            let idParking = results[results.length-1].idParking
+            if (results.length === 0) {
+                console.log("The user hasn't payed yet")
+                res.status(400).send({
+                    success: false,
+                    error: "The user hasn't payed yet"
+                })
+            } else {
+                let idParking = results[0].idParking
 
-            //Imposto la storia dell'utente
-            connection.query('UPDATE history SET dateDeparture = ?, code = 2 WHERE userEmail = ? && idParking = ?', [new Date(), req.body.email, idParking], function (err, results, fields){
-                if (err) {
-                    console.log(err)
-                    res.status(400).send({
-                        success: false,
-                        error: err
-                    })
-                } else {
-                    
-                    //Libero il parcheggio
-                    connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [idParking], function (err, results, fields){
-                        if (err) {
-                            console.log(err)
-                            res.status(400).send({
-                                success: false,
-                                error: err
-                            })
-                        } else {
-                            res.status(200).send()
-                        }
-                    })
-                }
-            })
+                //Imposto la storia dell'utente
+                connection.query('UPDATE history SET dateDeparture = ?, code = 2 WHERE userEmail = ? && code = 1', [new Date(), req.body.email], function (err, results, fields){
+                    if (err) {
+                        console.log(err)
+                        res.status(400).send({
+                            success: false,
+                            error: err
+                        })
+                    } else {
+                        
+                        //Libero il parcheggio
+                        connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [idParking], function (err, results, fields){
+                            if (err) {
+                                console.log(err)
+                                res.status(400).send({
+                                    success: false,
+                                    error: err
+                                })
+                            } else {
+                                res.status(201).send()
+                            }
+                        })
+                    }
+                })
+            }
         }
      })
 })
