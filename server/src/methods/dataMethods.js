@@ -8,5 +8,12 @@ module.exports = {
         } else {
             return false
         }
+    },
+
+    printParkings: function (parkings){
+        for(let i = 0; i<parkings.length; i++){
+            console.log("\n")
+            console.log(parkings[i])
+        }
     }
 }
