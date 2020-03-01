@@ -167,6 +167,59 @@ router.post ('/parking/book', async (req,res) => {
     })
 })
 
+/** Change a booked parking */
+router.post('/parking/book/change', async (req,res) => {
+    //Prendo il vecchio parcheggio
+    connection.query('SELECT * FROM history WHERE userEmail = ? && code = 0', [req.body.email], function (err, results, fields){
+        if (err) {
+            console.log(err)
+            res.status(400).send({
+                success: false,
+                error: err
+            })
+        } else {
+            let oldParking = results[0].idParking
+
+            //Aggiorno la storia
+            connection.query('UPDATE history SET idParking = ? WHERE userEmail = ? && code = 0', [req.body.idParking,req.body.email], function (err, results, fields){
+                if (err) {
+                    console.log(err)
+                    res.status(400).send({
+                        success: false,
+                        error: err
+                    })
+                } else {
+
+                    //Libero il vecchio parcheggio
+                    connection.query('UPDATE parkings SET code = 0 WHERE id = ?', [oldParking], function (err, results, fields){
+                        if (err) {
+                            console.log(err)
+                            res.status(400).send({
+                                success: false,
+                                error: err
+                            })
+                        } else {
+
+                            //Occupo il nuovo parcheggio
+                            connection.query('UPDATE parkings SET code = 1 WHERE id = ?', [req.body.idParking], function (err, results, fields){
+                                if (err) {
+                                    console.log(err)
+                                    res.status(400).send({
+                                        success: false,
+                                        error: err
+                                    })
+                                } else {
+                                    res.status(200).send()
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
+})
+
 /** Parking: Payment */
 router.post('/parking/payment', async (req,res) => {
     //Controllo se la carta esiste
@@ -200,7 +253,7 @@ router.post('/parking/payment', async (req,res) => {
                             error: "Cvv not correct"
                         })
                     } else {
-                        
+
                         //Aggiorno la quantità di soldi all'interno della carta
                         connection.query('UPDATE cards SET amount = ? WHERE userEmail = ? && card = ?', [results[0].amount - req.body.cash, req.body.email, req.body.card], function (err, results, fields){
                             if (err) {
