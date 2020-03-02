@@ -1,7 +1,6 @@
 'use strict'
 
 const express = require('express')
-const path = require('path')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
@@ -38,11 +37,14 @@ app.use(bodyParser.urlencoded({'extended': true, limit: '200mb'}))
 /* ROUTES */
 const authRoute = require("./routes/auth")
 const dataRoute = require("./routes/data")
+const municipalityRoute = require("./routes/municipality")
 
 // Routers
 // Auth API
 app.use('/api/auth', authRoute)
 // Data API
 app.use('/api/data', dataRoute)
+// Municipality API
+app.use('/api/municipality', municipalityRoute)
 
 module.exports = {app}

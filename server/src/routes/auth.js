@@ -65,16 +65,29 @@ router.post('/register', async (req, res) => {
                 error: "There is an error. Please try again!"
             })
         } else {
-            res.status(200).send({
-                autista: {
-                    info: "Benvenuto" + JSONbody.nome + " " + JSONbody.cognome + " !",
-                    token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, 0)),
-                    email: JSONbody.email,
-                    nome: JSONbody.nome,
-                    cognome: JSONbody.cognome,
-                    dataDiNascita: JSONbody.dataDiNascita,
-                    telefono: JSONbody.telefono,
-                    tipo: JSONbody.CF
+
+            //Cerco ID dell'utente
+            connection.query('SELECT * FROM users WHERE email = ?',[JSONbody.email], function (err, results, fields){
+                if (err) {
+                    console.log(err)
+                    res.status(400).send({
+                        success: false,
+                        error: "There is an error. Please try again!"
+                    })
+                } else {
+                    res.status(200).send({
+                        autista: {
+                            info: "Benvenuto" + JSONbody.nome + " " + JSONbody.cognome + " !",
+                            id: results[0].id,
+                            token: authMethods.createJwtToken(authMethods.createJwtPayload(req.body.email, 0)),
+                            email: JSONbody.email,
+                            nome: JSONbody.nome,
+                            cognome: JSONbody.cognome,
+                            dataDiNascita: JSONbody.dataDiNascita,
+                            telefono: JSONbody.telefono,
+                            tipo: JSONbody.CF
+                        }
+                    })
                 }
             })
         }

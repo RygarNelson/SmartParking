@@ -4,7 +4,6 @@ const express = require('express')
 
 const router = express.Router()
 
-const authMethods = require('../methods/authMethods')
 const dataMethods = require('../methods/dataMethods')
 
 const { connection } = require('../db')
