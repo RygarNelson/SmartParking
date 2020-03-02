@@ -1,0 +1,32 @@
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
+<form>
+    <button>Check</button>
+</form>
+
+<div id="results">
+
+</div>
+
+<script>
+    var resultsArray = [];
+
+    $("form").submit(function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:5700/api/municipality",
+        success: function(response){
+            console.log(response)
+            resultsArray.push(response.message);
+            $("#results").html(resultsArray.join("<br>"));
+        },
+        error: function(){
+            alert("Chiamata fallita!!!");
+        }
+    })
+  });
+</script>
