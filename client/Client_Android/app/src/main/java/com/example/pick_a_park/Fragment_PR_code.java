@@ -28,10 +28,9 @@ public class Fragment_PR_code extends FragmentWithOnBack  implements Connessione
     }
 
     @Override
-    public boolean onBackPressed() {
+    public void onBackPressed() {
         startActivity(new Intent(getContext(), LoginActivity.class));
         getActivity().finish();
-        return true;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -22,7 +22,8 @@
         <activity android:name=".NavigationActivity">
 
         </activity>
-        <activity android:name=".PasswordRecoveryActivity" />
+        <activity android:name=".PasswordRecoveryActivity"
+            android:theme="@style/LoginTheme"/>
         <activity
             android:name=".StartActivity"
             android:theme="@style/LoginTheme" >

@@ -157,9 +157,8 @@ public class Fragment_PR_password extends FragmentWithOnBack implements Connessi
         return buf.toString();
     }
     @Override
-    public boolean onBackPressed() {
+    public void onBackPressed() {
         startActivity(new Intent(getContext(), LoginActivity.class));
         getActivity().finish();
-        return true;
     }
 }

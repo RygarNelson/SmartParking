@@ -20,7 +20,7 @@ import org.json.*;
 
 public class LoginActivity extends AppCompatActivity implements ConnessioneListener {
     private ProgressDialog caricamento = null;
-    private int opzioniAvanzate = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,19 +118,7 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
                 Parametri.telefono = autistajs.getString("telefono");
 
                 message = "Welcome " + Parametri.nome + ".";
-                /*
-                // Tento l'estrazione dei dati della carta di credito
-                if (autistajs.has("carta_di_credito")) {
-                    carta = new JSONObject(autistajs.getString("carta_di_credito"));
 
-                    if (carta.has("numero_carta"))
-                        Parametri.numero_carta = carta.getString("numero_carta");
-                    if (carta.has("dataDiScadenza"))
-                        Parametri.data_di_scadenza = carta.getString("dataDiScadenza");
-                    if (carta.has("pin"))
-                        Parametri.pin = carta.getString("pin");
-                }
-                */
             } catch (Exception e) {
                 message = "Response Error.";
 
@@ -191,14 +179,9 @@ public class LoginActivity extends AppCompatActivity implements ConnessioneListe
         return buf.toString();
     }
 
-    private void impostazioniAvanzate() {
-        opzioniAvanzate++;
-
-        if (opzioniAvanzate == 3) {
-           // startActivity(new Intent(LoginActivity.this, ImpostazioniAvanzate.class));
-            opzioniAvanzate = 0;
-        }
-
+    @Override
+    public void onBackPressed(){
+        finish();
     }
 
 }

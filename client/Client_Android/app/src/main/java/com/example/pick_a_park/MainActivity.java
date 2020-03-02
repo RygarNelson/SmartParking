@@ -38,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
         View header1 = nav.getHeaderView(0);
         TextView mail = header1.findViewById(R.id.email);
         mail.setText(Parametri.email);
-        File imgFile = new File("/data/user/0/com.example.pick_a_park/app_imageDir/profile.jpg");
+        File imgFile = new File("/data/user/0/com.example.pick_a_park/app_imageDir/profile"+Parametri.id+".jpg");
         try {
             if (imgFile.exists()) {
 
-                Bitmap myBitmap = BitmapFactory.decodeFile(Parametri.path + "/profile.jpg");
+                Bitmap myBitmap = BitmapFactory.decodeFile(Parametri.path+"/profile"+Parametri.id+".jpg");
                 View header = nav.getHeaderView(0);
                 ImageView myImage = (ImageView) header.findViewById(R.id.img);
 
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
+
         Fragment myFragment =  getSupportFragmentManager().findFragmentByTag("HOME FRAGMENT");
         if (myFragment != null && myFragment.isVisible()) {
            ClearFragmentStack();
@@ -144,4 +145,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.openDrawer(GravityCompat.START);
 
     }
+
+
 }

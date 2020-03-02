@@ -22,7 +22,7 @@ import java.util.Random;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentAddCard extends Fragment implements ConnessioneListener {
+public class FragmentAddCard extends FragmentWithOnBack implements ConnessioneListener {
     EditText Code;
     EditText Expire;
     EditText Holder;
@@ -107,5 +107,10 @@ public class FragmentAddCard extends Fragment implements ConnessioneListener {
 
 
         }
+    }
+    @Override
+    public void onBackPressed(){
+        FragmentSelectCard fragment = new FragmentSelectCard();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
     }
 }

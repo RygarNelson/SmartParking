@@ -8,6 +8,7 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Path;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -33,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity implements ConnessioneList
     private ProgressDialog caricamento = null;
     protected static final int CAMERA_REQUEST = 0;
     protected static final int GALLERY_PICTURE = 1;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +94,8 @@ public class SignUpActivity extends AppCompatActivity implements ConnessioneList
             case 0:
                 if(resultCode == RESULT_OK){
                     Bundle extras = imageReturnedIntent.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    imageview.setImageBitmap(imageBitmap);
-                    Parametri.path = saveToInternalStorage(imageBitmap);
+                    bitmap = (Bitmap) extras.get("data");
+                    imageview.setImageBitmap(bitmap);
                     Toast.makeText(this, Parametri.path, Toast.LENGTH_LONG).show();
                 }
 
@@ -102,19 +105,20 @@ public class SignUpActivity extends AppCompatActivity implements ConnessioneList
                     Uri selectedImage = imageReturnedIntent.getData();
                     imageview.setImageURI(selectedImage);
                     BitmapDrawable drawable = (BitmapDrawable) imageview.getDrawable();
-                    Bitmap bitmap = drawable.getBitmap();
-                    Parametri.path = saveToInternalStorage(bitmap);
+                    bitmap = drawable.getBitmap();
                     Toast.makeText(this, Parametri.path, Toast.LENGTH_LONG).show();
                 }
                 break;
         }
     }
     private String saveToInternalStorage(Bitmap bitmapImage){
+        if(bitmapImage == null)
+            return "no image";
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
-        File mypath=new File(directory,"profile.jpg");
+        File mypath=new File(directory,"profile" + Parametri.id+".jpg");
 
         FileOutputStream fos = null;
         try {
@@ -239,7 +243,7 @@ public class SignUpActivity extends AppCompatActivity implements ConnessioneList
             try {
                 JSONObject token = new JSONObject(result);
                 JSONObject autistajs = new JSONObject(token.getString("autista"));
-
+                Parametri.id = autistajs.getString("id");
                 Parametri.Token = autistajs.getString("token");
                 Parametri.nome = autistajs.getString("nome");
                 Parametri.cognome = autistajs.getString("cognome");
@@ -261,6 +265,8 @@ public class SignUpActivity extends AppCompatActivity implements ConnessioneList
                         Parametri.pin = carta.getString("pin");
                 }
                 */
+                Parametri.path = saveToInternalStorage(bitmap);
+                int x = 0;
             } catch (Exception e) {
                 message = "Response Error.";
 

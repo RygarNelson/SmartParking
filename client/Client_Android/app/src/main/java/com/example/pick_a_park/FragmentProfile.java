@@ -42,11 +42,11 @@ public class FragmentProfile extends Fragment implements ConnessioneListener{
 
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        File imgFile = new File("/data/user/0/com.example.pick_a_park/app_imageDir/profile.jpg");
+        File imgFile = new File("/data/user/0/com.example.pick_a_park/app_imageDir/profile"+Parametri.id+".jpg");
         try {
             if (imgFile.exists()) {
 
-                Bitmap myBitmap = BitmapFactory.decodeFile(Parametri.path + "/profile.jpg");
+                Bitmap myBitmap = BitmapFactory.decodeFile(Parametri.path+"/profile"+Parametri.id+".jpg");
 
                 ImageView myImage = (ImageView) view.findViewById(R.id.img);
 

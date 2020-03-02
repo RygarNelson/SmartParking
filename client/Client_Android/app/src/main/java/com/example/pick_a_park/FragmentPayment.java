@@ -29,7 +29,7 @@ import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentPayment extends Fragment implements ConnessioneListener{
+public class FragmentPayment extends FragmentWithOnBack implements ConnessioneListener{
     EditText cvv;
     private ProgressDialog caricamento = null;
     public FragmentPayment() {
@@ -120,5 +120,11 @@ public class FragmentPayment extends Fragment implements ConnessioneListener{
 
 
         }
+    }
+    @Override
+    public void onBackPressed(){
+        FragmentSelectCard fragment = new FragmentSelectCard();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+
     }
 }

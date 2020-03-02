@@ -126,16 +126,19 @@ public class FragmentMap extends FragmentWithOnBack implements ConnessioneListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
 
+        Mapbox.getInstance(getActivity().getApplicationContext(), getString(R.string.map_box_key));
+        final View view = inflater.inflate(R.layout.fragment_map, container, false);
         navigation = new MapboxNavigation(getContext(), getString(R.string.map_box_key));
         SharedPreferences sharedPreferences = getActivity().getPreferences(MODE_PRIVATE);
         Parametri.nearest_park = sharedPreferences.getBoolean("nearest_park", true);
         selected_park = 0;
         parks = new ArrayList<>();
-        Mapbox.getInstance(getActivity().getApplicationContext(), getString(R.string.map_box_key));
-        getActivity().setContentView(R.layout.fragment_map);
-        mapView = (MapView) getActivity().findViewById(R.id.mapView);
+
+        if (mapView == null) {
+            mapView = (MapView) view.findViewById(R.id.mapView);
+        }
         mapView.onCreate(savedInstanceState);
-        final View view = inflater.inflate(R.layout.fragment_map, container, false);
+
         mapView.getMapAsync(new OnMapReadyCallback() {
                                 @Override
                                 public void onMapReady(@NonNull final MapboxMap mapboxMap) {
@@ -584,12 +587,7 @@ public class FragmentMap extends FragmentWithOnBack implements ConnessioneListen
         String directionsRouteJson = preferences.getString(NavigationConstants.NAVIGATION_VIEW_ROUTE_KEY, "");
         return DirectionsRoute.fromJson(directionsRouteJson);
     }
-    @Override
-    public boolean onBackPressed() {
-        startActivity(new Intent(getContext(), MainActivity.class));
-        getActivity().finish();
-        return true;
-    }
+
 }
 
 
