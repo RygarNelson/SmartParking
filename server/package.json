@@ -12,7 +12,7 @@
   "author": "Daniele Moscati, Luca Marasca, Alessandro Silveri",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "helmet": "^3.21.3",
